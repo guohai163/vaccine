@@ -2,6 +2,17 @@ server:
   port: 8000
   tomcat:
     uri-encoding: UTF-8
+spring:
+  freemarker:
+    template-loader-path: classpath:/web/
+    cache: false
+    charset: UTF-8
+    content-type: text/html
+    suffix: .ftl
+    check-template-location: true
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
 my-data:
   mapVaccine:
     HepB: {keyName: HepB,des: 乙肝疫苗,accinationMonthAge: [1,2,0,0,0,0,3,0,0,0,0,0,0,0,0] ,state: true}
