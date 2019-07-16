@@ -22,21 +22,17 @@ public class CalculatorController {
     private HashMap<String , VaccineDateBean> vmap = new HashMap<>();
 
     @RequestMapping(value = "/")
-    public String  index(Model model,String echostr) {
+    public String  index(Model model) {
 
-        model.addAttribute("test",echostr);
-        System.out.println(request.getQueryString());
-        return "test";
-
-//        model.addAttribute("user",getIpAddr(request));
-//        return "index";
+        model.addAttribute("user",getIpAddr(request));
+        return "index";
     }
 
     @RequestMapping(value = "/result")
     public String result(Model model,String brdate,String level2vaccine) {
 
 
-        vaccineData.getMapVaccine().get("IPV").setState(false);
+//        vaccineData.getMapVaccine().get("IPV").setState(false);
 
         model.addAttribute("brdate",brdate);
         model.addAttribute("mapVaccine", vaccineData.getMapVaccine());
