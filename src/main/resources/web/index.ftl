@@ -828,9 +828,14 @@
             </td>
         </tr>
     <tr>
-        <td><input type="checkbox" name="DTaP-IPV/Hib" value="PENTAXIM" /></td>
+        <td><input type="checkbox" name="level2vaccine" value="DTaP-IPV/Hib" /></td>
         <td>五联</td>
         <td>吸附无细胞百白破灭活脊髓灰质炎和b型流感嗜血杆菌（结合）联合疫苗,可以同时联合5种疫苗，能从之前的12针缩减到4针。</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="level2vaccine" value="13" /></td>
+        <td>13价肺炎</td>
+        <td>。</td>
     </tr>
     </tbody>
     </table>

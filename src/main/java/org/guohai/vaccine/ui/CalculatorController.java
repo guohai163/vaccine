@@ -1,30 +1,50 @@
 package org.guohai.vaccine.ui;
 
+import org.guohai.vaccine.org.guohai.vaccine.beans.BindDataToBean;
+import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineDateBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
+import java.util.HashMap;
 
 @Controller
 public class CalculatorController {
     @Autowired
     private HttpServletRequest request;
 
-    @RequestMapping(value = "/")
-    public String  index(Model model) {
+    @Autowired
+    private BindDataToBean vaccineData;
 
-        model.addAttribute("user",getIpAddr(request));
-        return "index";
+    private HashMap<String , VaccineDateBean> vmap = new HashMap<>();
+
+    @RequestMapping(value = "/")
+    public String  index(Model model,String echostr) {
+
+        model.addAttribute("test",echostr);
+        System.out.println(request.getQueryString());
+        return "test";
+
+//        model.addAttribute("user",getIpAddr(request));
+//        return "index";
     }
 
     @RequestMapping(value = "/result")
-    public String result(Model model) {
+    public String result(Model model,String brdate,String level2vaccine) {
+
+
+        vaccineData.getMapVaccine().get("IPV").setState(false);
+
+        model.addAttribute("brdate",brdate);
+        model.addAttribute("mapVaccine", vaccineData.getMapVaccine());
         return "result";
+    }
+
+    private void initVaccine() {
+
     }
 
     private String getIpAddr(HttpServletRequest request) {
