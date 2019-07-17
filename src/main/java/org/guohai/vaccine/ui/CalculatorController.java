@@ -30,7 +30,7 @@ public class CalculatorController {
     }
 
     @RequestMapping(value = "/result")
-    public String result(Model model,String brdate,String level2vaccine) {
+    public String result(Model model,String brdate,String[] level2vaccine) {
 
 
 //        vaccineData.getMapVaccine().get("IPV").setState(false);
