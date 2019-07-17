@@ -32,6 +32,17 @@ public class CalculatorController {
     @RequestMapping(value = "/result")
     public String result(Model model,String brdate,String[] level2vaccine) {
 
+        for(String l2:level2vaccine) {
+            switch (l2) {
+                case "DTaP-IPV/Hib":
+                    vaccineData.getMapVaccine().get("IPV").setState(false);
+                    vaccineData.getMapVaccine().get("OPV").setState(false);
+                    vaccineData.getMapVaccine().get("DTaP").setState(false);
+                    vaccineData.getMapVaccine().get("DTaP-IPVHib").setState(true);
+                    break;
+
+            }
+        }
 
 //        vaccineData.getMapVaccine().get("IPV").setState(false);
 

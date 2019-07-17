@@ -46,7 +46,7 @@
             <tr>
                 <td><input type="checkbox" name="level2vaccine" value="13" /></td>
                 <td>13价肺炎</td>
-                <td>。</td>
+                <td>13价肺炎球菌结合疫苗</td>
             </tr>
             </tbody>
         </table>

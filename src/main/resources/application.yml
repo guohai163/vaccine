@@ -27,4 +27,4 @@ my-data:
     MPSV-A: {keyName: MPSV-A,des: A群流脑多糖疫苗,accinationMonthAge: [0,0,0,0,0,0,1,0,2,0,0,0,0,0,0],state: true}
     MPSV-AC: {keyName: MPSV-AC,des: A群C群流脑多糖疫苗,accinationMonthAge: [0,0,0,0,0,0,0,0,0,0,0,1,0,0,2],state: true}
     HepA-I: {keyName: HepA-I,des: 甲肝灭活疫苗,accinationMonthAge: [0,0,0,0,0,0,0,0,0,1,2,0,0,0,0],state: true}
-    DTaP-IPV/Hib: {keyName: DTaP-IPV/Hib,des: 五联,accinationMonthAge: [0,0,1,2,3,0,0,0,0,4,0,0,0,0,0],state: false}
+    DTaP-IPVHib: {keyName: DTaP-IPV/Hib,des: 五联,accinationMonthAge: [0,0,1,2,3,0,0,0,0,4,0,0,0,0,0],state: false}

@@ -5,7 +5,7 @@
 </head>
 
 <div style="float: left;">
-    <div>${brdate}</div>
+    <div>出生日期：${brdate}</div>
     <div><#include "inc/vaccinetable.ftl"></div>
 
 <div>
