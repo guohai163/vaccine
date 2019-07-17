@@ -24,6 +24,7 @@ public class CalculatorController {
     @RequestMapping(value = "/")
     public String  index(Model model) {
 
+        model.addAttribute("mapVaccine", vaccineData.getMapVaccine());
         model.addAttribute("user",getIpAddr(request));
         return "index";
     }
