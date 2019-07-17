@@ -40,6 +40,9 @@ public class CalculatorController {
                     vaccineData.getMapVaccine().get("DTaP").setState(false);
                     vaccineData.getMapVaccine().get("DTaP-IPVHib").setState(true);
                     break;
+                case "PCV13":
+                    vaccineData.getMapVaccine().get("PCV13").setState(true);
+                    break;
 
             }
         }
