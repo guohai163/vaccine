@@ -1,12 +1,6 @@
 <html>
 <head>
-    <title>疫苗计算器</title>
-    <link rel="stylesheet" href="/css/jquery-ui.css"></link>
-    <script src="/js/jquery-3.4.1.min.js"></script>
-    <script src="/js/jquery-ui.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"></meta>
-    <meta name="apple-touch-fullscreen" content="YES"></meta>
-    <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+    <#include "inc/head.ftl">
     <!--    <link rel="stylesheet" href="/css/style.css">-->
     <script>
       $(function() {
