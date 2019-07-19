@@ -15,3 +15,7 @@
 5. 用户选择信息存储在cookies,尽量不在服务器进行存储。保护用户隐私
 6. 使用FreeMarker模版引擎
 
+
+欢迎订阅公众号：海哥聊技术
+
+![http://guohai.org/assets/wechat.jpg](http://guohai.org/assets/wechat.jpg)
