@@ -34,24 +34,23 @@
             <tbody>
             <tr>
                 <td style="HEIGHT: 14px; WIDTH: 163px" >
-                    <p align="center">是否使用</p>
-                </td>
-                <td style="HEIGHT: 14px; WIDTH: 163px" >
-                    <p align="center">疫苗名称</p>
+                    <p align="center">选择疫苗</p>
                 </td>
                 <td style="HEIGHT: 14px; WIDTH: 628px" >
                     <p align="center">疫苗说明</p>
                 </td>
             </tr>
             <tr>
-                <td><input type="checkbox" name="level2vaccine" value="DTaP-IPV/Hib" /></td>
-                <td>五联</td>
+                <td><input type="checkbox" name="level2vaccine" value="DTaP-IPV/Hib" />五联</td>
                 <td>吸附无细胞百白破灭活脊髓灰质炎和b型流感嗜血杆菌（结合）联合疫苗,可以同时联合5种疫苗，能从之前的12针缩减到4针。</td>
             </tr>
             <tr>
-                <td><input type="checkbox" name="level2vaccine" value="PCV13" /></td>
-                <td>13价肺炎</td>
+                <td><input type="checkbox" name="level2vaccine" value="PCV13" />13价肺炎</td>
                 <td>13价肺炎球菌结合疫苗</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="level2vaccine" value="LLR" />轮状病毒</td>
+                <td>口服轮状病毒疫苗用轮状病毒减毒株[建议每年一剂直至三岁，4~6岁再接种一次即可]</td>
             </tr>
             </tbody>
         </table>

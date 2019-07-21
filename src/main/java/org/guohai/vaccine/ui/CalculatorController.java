@@ -43,6 +43,9 @@ public class CalculatorController {
                 case "PCV13":
                     vaccineData.getMapVaccine().get("PCV13").setState(true);
                     break;
+                case "LLR":
+                    vaccineData.getMapVaccine().get("LLR").setState(true);
+                    break;
 
             }
         }
