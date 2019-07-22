@@ -8,13 +8,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 程序主Controller负责展示和计算
+ */
 @Controller
-public class CalculatorController {
+class CalculatorController {
+
     @Autowired
     private HttpServletRequest request;
 
@@ -23,15 +25,15 @@ public class CalculatorController {
 
 
     /**
-     *
-     * @param model
-     * @return
+     * 首页Action
+     * @param model 接收页面传入
+     * @return 返回模板名称
      */
     @RequestMapping(value = "/")
     public String  index(Model model) {
 
         model.addAttribute("mapVaccine", vaccineData.getMapVaccine());
-        model.addAttribute("user",getIpAddr(request));
+
         return "index";
     }
 
@@ -56,15 +58,18 @@ public class CalculatorController {
             }
         }
 
-//        vaccineData.getMapVaccine().get("IPV").setState(false);
-
         model.addAttribute("brdate",brdate);
         model.addAttribute("mapVaccine", mapVaccine);
         return "result";
     }
 
+    /**
+     * COPY类的一个简单防范，高度定制版本
+     * @param original 输入待深拷贝的对象
+     * @return 返回深度拷贝结果
+     */
     private HashMap<String,VaccineDateBean> copy(HashMap<String, VaccineDateBean> original) {
-        HashMap<String, VaccineDateBean> copy = new HashMap<String, VaccineDateBean>();
+        HashMap<String, VaccineDateBean> copy = new HashMap<>();
 
         for(Map.Entry<String,VaccineDateBean> entry: original.entrySet()){
             VaccineDateBean val = new VaccineDateBean();
@@ -77,39 +82,6 @@ public class CalculatorController {
         return copy;
     }
 
-    private void initVaccine() {
 
-    }
-
-    private String getIpAddr(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-            if(ip.equals("127.0.0.1")){
-                //根据网卡取本机配置的IP
-                InetAddress inet=null;
-
-                try {
-                    inet = InetAddress.getLocalHost();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                ip= inet.getHostAddress();
-            }
-        }
-        // 多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-        if(ip != null && ip.length() > 15){
-            if(ip.indexOf(",")>0){
-                ip = ip.substring(0,ip.indexOf(","));
-            }
-        }
-        return ip;
-    }
 
 }

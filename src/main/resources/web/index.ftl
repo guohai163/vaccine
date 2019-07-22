@@ -5,6 +5,7 @@
     <script>
       $(function() {
         $( "#datepicker" ).datepicker({dateFormat: "yy-mm-dd" } );
+        $("#datepicker").focus(function(){document.activeElement.blur();});
       });
 
       function checkBrDate(){
@@ -56,7 +57,7 @@
         </table>
 </div>
         <div>
-        新生儿出生日期：<input type="text" name="brdate" id="datepicker" />
+        新生儿出生日期：<input type="text" name="brdate" id="datepicker"/>
         </div>
         <div>
         <input style="margin:20px 150px;" type="submit" value="提交" onclick="return checkBrDate();" />

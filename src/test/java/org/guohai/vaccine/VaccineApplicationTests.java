@@ -11,6 +11,7 @@ public class VaccineApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		System.out.println("test");
 	}
 
 }
