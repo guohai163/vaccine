@@ -20,4 +20,5 @@ public class VaccineDateBean {
     @Getter
     @Setter
     private boolean state;
+
 }

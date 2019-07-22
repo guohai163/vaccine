@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class CalculatorController {
@@ -19,7 +20,6 @@ public class CalculatorController {
     @Autowired
     private BindDataToBean vaccineData;
 
-    private HashMap<String , VaccineDateBean> vmap = new HashMap<>();
 
     @RequestMapping(value = "/")
     public String  index(Model model) {
@@ -31,20 +31,20 @@ public class CalculatorController {
 
     @RequestMapping(value = "/result")
     public String result(Model model,String brdate,String[] level2vaccine) {
-
+        HashMap<String,VaccineDateBean> mapVaccine = copy(vaccineData.getMapVaccine());
         for(String l2:level2vaccine) {
             switch (l2) {
                 case "DTaP-IPV/Hib":
-                    vaccineData.getMapVaccine().get("IPV").setState(false);
-                    vaccineData.getMapVaccine().get("OPV").setState(false);
-                    vaccineData.getMapVaccine().get("DTaP").setState(false);
-                    vaccineData.getMapVaccine().get("DTaP-IPVHib").setState(true);
+                    mapVaccine.get("IPV").setState(false);
+                    mapVaccine.get("OPV").setState(false);
+                    mapVaccine.get("DTaP").setState(false);
+                    mapVaccine.get("DTaP-IPVHib").setState(true);
                     break;
                 case "PCV13":
-                    vaccineData.getMapVaccine().get("PCV13").setState(true);
+                    mapVaccine.get("PCV13").setState(true);
                     break;
                 case "LLR":
-                    vaccineData.getMapVaccine().get("LLR").setState(true);
+                    mapVaccine.get("LLR").setState(true);
                     break;
 
             }
@@ -53,8 +53,22 @@ public class CalculatorController {
 //        vaccineData.getMapVaccine().get("IPV").setState(false);
 
         model.addAttribute("brdate",brdate);
-        model.addAttribute("mapVaccine", vaccineData.getMapVaccine());
+        model.addAttribute("mapVaccine", mapVaccine);
         return "result";
+    }
+
+    private HashMap<String,VaccineDateBean> copy(HashMap<String, VaccineDateBean> original) {
+        HashMap<String, VaccineDateBean> copy = new HashMap<String, VaccineDateBean>();
+
+        for(Map.Entry<String,VaccineDateBean> entry: original.entrySet()){
+            VaccineDateBean val = new VaccineDateBean();
+            val.setKeyName(entry.getValue().getKeyName());
+            val.setDes(entry.getValue().getDes());
+            val.setState(entry.getValue().isState());
+            val.setAccinationMonthAge(entry.getValue().getAccinationMonthAge());
+            copy.put(entry.getKey(),val);
+        }
+        return copy;
     }
 
     private void initVaccine() {

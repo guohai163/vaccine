@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
+
 @Component
 @ConfigurationProperties(prefix = "my-data")
 public class BindDataToBean {
@@ -18,4 +19,5 @@ public class BindDataToBean {
     public void setMapVaccine(HashMap<String, VaccineDateBean> mapVaccine) {
         this.mapVaccine = mapVaccine;
     }
+
 }
