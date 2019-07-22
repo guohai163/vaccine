@@ -68,54 +68,52 @@
             <p align="center">${value.keyName}</p>
         </td>
         <td class="monthage0" style="HEIGHT: 15px; WIDTH: 45px">
-            <p align="center">
-
-                ${(value.accinationMonthAge[0]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[0]==0)?string('','💉')}</p>
         </td>
         <td class="monthage1" style="HEIGHT: 15px; WIDTH: 28px">
-            <p align="center">${(value.accinationMonthAge[1]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[1]==0)?string('','💉')}</p>
         </td>
         <td class="monthage2" style="HEIGHT: 15px; WIDTH: 28px">
-            <p align="center">${(value.accinationMonthAge[2]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[2]==0)?string('','💉')}</p>
         </td>
         <td class="monthage3" style="HEIGHT: 15px; WIDTH: 30px">
-            <p align="center">${(value.accinationMonthAge[3]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[3]==0)?string('','💉')}</p>
         </td>
         <td class="monthage4" style="HEIGHT: 15px; WIDTH: 41px">
-            <p align="center">${(value.accinationMonthAge[4]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[4]==0)?string('','💉')}</p>
         </td>
         <td class="monthage5" style="HEIGHT: 15px; WIDTH: 41px">
-            <p align="center">${(value.accinationMonthAge[5]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[5]==0)?string('','💉')}</p>
         </td>
         <td class="monthage6" style="HEIGHT: 15px; WIDTH: 43px">
-            <p align="center">${(value.accinationMonthAge[6]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[6]==0)?string('','💉')}</p>
         </td>
         <td class="monthage8" style="HEIGHT: 15px; WIDTH: 52px">
-            <p align="center">${(value.accinationMonthAge[7]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[7]==0)?string('','💉')}</p>
         </td>
         <td class="monthage9" style="HEIGHT: 15px; WIDTH: 45px">
-            <p align="center">${(value.accinationMonthAge[8]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[8]==0)?string('','💉')}</p>
         </td>
         <td class="monthage12" style="HEIGHT: 15px; WIDTH: 45px">
-            <p align="center">${(value.accinationMonthAge[9]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[9]==0)?string('','💉')}</p>
         </td>
         <td class="monthage18" style="HEIGHT: 15px; WIDTH: 45px">
-            <p align="center">${(value.accinationMonthAge[10]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[10]==0)?string('','💉')}</p>
         </td>
         <td class="monthage24" style="HEIGHT: 15px; WIDTH: 46px">
-            <p align="center">${(value.accinationMonthAge[11]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[11]==0)?string('','💉')}</p>
         </td>
         <td class="monthage36" style="HEIGHT: 15px; WIDTH: 47px">
-            <p align="center">${(value.accinationMonthAge[12]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[12]==0)?string('','💉')}</p>
         </td>
         <td class="monthage48" style="HEIGHT: 15px; WIDTH: 47px">
-            <p align="center">${(value.accinationMonthAge[13]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[13]==0)?string('','💉')}</p>
         </td>
         <td class="monthage60" style="HEIGHT: 15px; WIDTH: 47px">
-            <p align="center">${(value.accinationMonthAge[14]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[14]==0)?string('','💉')}</p>
         </td>
         <td class="monthage72" style="HEIGHT: 15px; WIDTH: 43px">
-            <p align="center">${(value.accinationMonthAge[15]==0)?string('','<img src="/img/p1.png"/>')}</p>
+            <p align="center">${(value.accinationMonthAge[15]==0)?string('','💉')}</p>
         </td>
     </tr>
     </#if>

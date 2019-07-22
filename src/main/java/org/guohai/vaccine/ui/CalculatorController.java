@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Controller
 public class CalculatorController {
     @Autowired
@@ -21,6 +22,11 @@ public class CalculatorController {
     private BindDataToBean vaccineData;
 
 
+    /**
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/")
     public String  index(Model model) {
 
