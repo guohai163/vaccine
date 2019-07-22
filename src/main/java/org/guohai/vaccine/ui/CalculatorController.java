@@ -39,6 +39,13 @@ class CalculatorController {
 
     @RequestMapping(value = "/result")
     public String result(Model model,String brdate,String[] level2vaccine) {
+        model.addAttribute("brdate",brdate);
+
+        if(level2vaccine == null) {
+
+            model.addAttribute("mapVaccine", vaccineData.getMapVaccine());
+            return "result";
+        }
         HashMap<String,VaccineDateBean> mapVaccine = copy(vaccineData.getMapVaccine());
         for(String l2:level2vaccine) {
             switch (l2) {
@@ -58,7 +65,6 @@ class CalculatorController {
             }
         }
 
-        model.addAttribute("brdate",brdate);
         model.addAttribute("mapVaccine", mapVaccine);
         return "result";
     }
