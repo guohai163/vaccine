@@ -1,11 +1,13 @@
 package org.guohai.vaccine.service;
 
+import org.guohai.vaccine.dao.VaccineDao;
 import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,6 +19,9 @@ import java.util.List;
 
 @Service
 public class VaccineBatchServiceImpl implements VaccineBatchService {
+
+    @Autowired
+    VaccineDao vaccineDao;
     /**
      * nifdc数据处理
      *
@@ -27,7 +32,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         //https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2019/12077.html
 //https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2019/index.html
         List<String> list = vaccinePageQuery("https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2019/index.html");
-        System.out.println(list);
+
         return null;
     }
 
@@ -40,6 +45,11 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
             Elements elesBatch = doc.getElementsByClass("ListColumnClass5");
             for(Element ele : elesBatch) {
                 listBatch.add(newUrl+ele.getElementsByTag("a").attr("href"));
+                Integer code=0;
+                String href=newUrl+ele.getElementsByTag("a").attr("href");
+                String title = newUrl+ele.getElementsByTag("a").attr("title");
+                vaccineDao.addBatchUrl(href,title,code);
+                System.out.println(code);
             }
         } catch (IOException e) {
             e.printStackTrace();

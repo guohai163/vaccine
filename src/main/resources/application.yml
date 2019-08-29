@@ -3,6 +3,12 @@ server:
   tomcat:
     uri-encoding: UTF-8
 spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://172.17.0.3/vaccine_db?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: vaccine
+      password: vaccine!QAZ
   freemarker:
     template-loader-path: classpath:/web/
     cache: false

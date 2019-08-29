@@ -22,7 +22,7 @@
 SET character_set_client = utf8mb4 ;
 
 CREATE TABLE `vaccine_url_tb` (
-  `code` int(11) NOT NULL,
+  `code` int(11) NOT NULL AUTO_INCREMENT,
   `batch_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `batch_name` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`code`)
