@@ -1,15 +1,24 @@
 package org.guohai.vaccine.ui;
 
 import org.guohai.vaccine.org.guohai.vaccine.beans.BindDataToBean;
+import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineDateBean;
+import org.guohai.vaccine.service.VaccineBatchService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 程序主Controller负责展示和计算
@@ -23,6 +32,14 @@ class CalculatorController {
     @Autowired
     private BindDataToBean vaccineData;
 
+    @Autowired
+    private VaccineBatchService vaccineBatchService;
+
+    @ResponseBody
+    @RequestMapping(value = "/catch")
+    public Result<String> catchData() {
+        return  vaccineBatchService.nifdcVaccineData();
+    }
 
     /**
      * 首页Action
