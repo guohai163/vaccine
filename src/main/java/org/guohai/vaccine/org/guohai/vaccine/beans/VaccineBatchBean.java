@@ -44,7 +44,7 @@ public class VaccineBatchBean {
     /**
      * 有效期至
      */
-    private Date expDate;
+    private String expDate;
 
     /**
      * 生产企业

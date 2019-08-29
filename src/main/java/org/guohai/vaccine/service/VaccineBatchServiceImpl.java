@@ -3,6 +3,7 @@ package org.guohai.vaccine.service;
 import org.guohai.vaccine.dao.VaccineDao;
 import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
+import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineUrlBean;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,32 +29,56 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
      * @return
      */
     @Override
-    public Result<String> nifdcVaccineData() {
-        //https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2019/12077.html
-//https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2019/index.html
-        List<String> list = vaccinePageQuery("https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2019/index.html");
+    public Result<String> nifdcVaccineData(String yeah,String index) {
 
-        return null;
+        String catchUrl = "https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf"+yeah+"/index"+index+".html";
+
+        Result<String> result = new Result<>(false,"");
+        List<VaccineUrlBean> listUrl = null;
+        try {
+            listUrl = vaccinePageQuery(catchUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            result.setData(result.getData()+"url:[index.html]出错\n"+e.getMessage()+"\n");
+        }
+        for(VaccineUrlBean urlBean : listUrl) {
+            //TODO: 检查库里是否存在，如不存在继续，如存在跳过
+            if(vaccineDao.getBatchUrlCount(urlBean.getBatchUrl())>0) {
+                continue;
+            }
+            vaccineDao.addBatchUrl(urlBean);
+            System.out.println(urlBean.getBatchName());
+            List<VaccineBatchBean> listBatch = null;
+            try {
+                listBatch = vaccineBatchQuery(urlBean.getCode(),urlBean.getBatchUrl(),Integer.valueOf(yeah));
+            } catch (IOException e) {
+                result.setData(result.getData()+"url:["+urlBean.getBatchUrl()+"]出错\n"+e.getMessage()+"\n");
+            }
+            System.out.println(listBatch);
+            for(VaccineBatchBean batchBean: listBatch) {
+                vaccineDao.addVaccineBatchData(batchBean);
+            }
+        }
+        if ("".equals(result.getData())) {
+            result.setStatus(true);
+        }
+        return result;
     }
 
-    private List<String> vaccinePageQuery(String url) {
-        List<String> listBatch = new ArrayList<>();
+    private List<VaccineUrlBean> vaccinePageQuery(String url) throws IOException {
+        List<VaccineUrlBean> listBatch = new ArrayList<>();
         String newUrl = url.replaceAll("/[^/]+$","/");
         Document doc = null;
-        try {
+
             doc = Jsoup.connect(url).get();
             Elements elesBatch = doc.getElementsByClass("ListColumnClass5");
             for(Element ele : elesBatch) {
-                listBatch.add(newUrl+ele.getElementsByTag("a").attr("href"));
-                Integer code=0;
+
                 String href=newUrl+ele.getElementsByTag("a").attr("href");
-                String title = newUrl+ele.getElementsByTag("a").attr("title");
-                vaccineDao.addBatchUrl(href,title,code);
-                System.out.println(code);
+                String title = ele.getElementsByTag("a").attr("title");
+                listBatch.add(new VaccineUrlBean(0,href,title));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         return listBatch;
     }
 
@@ -63,30 +88,43 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
      * @param batchUrl
      * @return
      */
-    private List<VaccineBatchBean> vaccineBatchQuery(Integer batchCode, String batchUrl) {
+    private List<VaccineBatchBean> vaccineBatchQuery(Integer batchCode, String batchUrl,Integer yeah) throws IOException {
         List<VaccineBatchBean> list = new ArrayList<VaccineBatchBean>();
         Document doc = null;
-        try {
-            doc = Jsoup.connect(batchUrl).get();
+            doc = Jsoup.connect(batchUrl).maxBodySize(0).get();
             Elements eleDataArea = doc.select("[id=printArea]");
             Elements eleTr = eleDataArea.select("tr");
-            VaccineBatchBean a = new VaccineBatchBean();
-            a.setExpDate(new Date());
-            list.add(a);
             for(int i = 1;i<eleTr.size();i++) {
                 Elements ele = eleTr.get(i).select("td");
-                System.out.println(i);
-                VaccineBatchBean vbb = new VaccineBatchBean(0,ele.get(0).text(),ele.get(1).text(),
-                        ele.get(2).text(),ele.get(3).text(),ele.get(4).text(), StringDate2Date(ele.get(5).text()),ele.get(6).text(),
-                        ele.get(7).text(),ele.get(8).text(),ele.get(9).text(),ele.get(10).text(),ele.get(11).text(),
-                        ele.get(12).text(),batchCode,"","");
+                VaccineBatchBean vbb;
+                if(ele.size() == 13) {
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
+                            ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(6).text(),
+                            ele.get(7).text(), ele.get(8).text(), ele.get(9).text(), ele.get(10).text(), ele.get(11).text(),
+                            ele.get(12).text(), batchCode, "", "");
+                }
+                else if(ele.size() == 12) {
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
+                            ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(6).text(),
+                            ele.get(7).text(), ele.get(8).text(), ele.get(9).text(), ele.get(10).text(), ele.get(11).text(),
+                            "", batchCode, "", "");
+                }else if(ele.size() == 11){
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
+                            ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(6).text(),
+                            "", ele.get(7).text(), ele.get(8).text(), ele.get(9).text(), ele.get(10).text(),
+                            "", batchCode, "", "");
+                }
+                else {
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
+                            ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(6).text(), ele.get(7).text(),
+                            "", "", "", "ele.get(9).text()", ele.get(8).text(),
+                            "", batchCode, "", "");
+                }
                 list.add(vbb);
             }
 
 
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+
 
         return list;
     }

@@ -11,6 +11,8 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,9 +38,9 @@ class CalculatorController {
     private VaccineBatchService vaccineBatchService;
 
     @ResponseBody
-    @RequestMapping(value = "/catch")
-    public Result<String> catchData() {
-        return  vaccineBatchService.nifdcVaccineData();
+    @RequestMapping(value = "/catch/{yeah}")
+    public Result<String> catchData(@PathVariable("yeah") String yeah,@ModelAttribute("index") String index) {
+        return  vaccineBatchService.nifdcVaccineData(yeah,index);
     }
 
     /**

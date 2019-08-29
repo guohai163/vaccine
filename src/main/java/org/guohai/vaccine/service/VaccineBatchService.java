@@ -8,5 +8,5 @@ public interface VaccineBatchService {
      * nifdc数据处理
      * @return
      */
-    Result<String> nifdcVaccineData();
+    Result<String> nifdcVaccineData(String yeah,String index);
 }
