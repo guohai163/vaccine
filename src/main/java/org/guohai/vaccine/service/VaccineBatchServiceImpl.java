@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.RecursiveTask;
 
 @Service
 public class VaccineBatchServiceImpl implements VaccineBatchService {
@@ -32,11 +33,11 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
     public Result<String> nifdcVaccineData(String yeah,String index) {
 
         String catchUrl = "https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf"+yeah+"/index"+index+".html";
-
+        Integer iYeah = Integer.valueOf(yeah);
         Result<String> result = new Result<>(false,"");
         List<VaccineUrlBean> listUrl = null;
         try {
-            listUrl = vaccinePageQuery(catchUrl);
+            listUrl = vaccinePageQuery(catchUrl,iYeah);
         } catch (IOException e) {
             e.printStackTrace();
             result.setData(result.getData()+"url:[index.html]出错\n"+e.getMessage()+"\n");
@@ -50,11 +51,14 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
             System.out.println(urlBean.getBatchName());
             List<VaccineBatchBean> listBatch = null;
             try {
-                listBatch = vaccineBatchQuery(urlBean.getCode(),urlBean.getBatchUrl(),Integer.valueOf(yeah));
+                listBatch = vaccineBatchQuery(urlBean.getCode(),urlBean.getBatchUrl(),iYeah);
             } catch (IOException e) {
                 result.setData(result.getData()+"url:["+urlBean.getBatchUrl()+"]出错\n"+e.getMessage()+"\n");
             }
-            System.out.println(listBatch);
+            if(listBatch.size()>0) {
+                System.out.println(listBatch.get(0));
+            }
+            System.out.println(listBatch.size());
             for(VaccineBatchBean batchBean: listBatch) {
                 vaccineDao.addVaccineBatchData(batchBean);
             }
@@ -65,7 +69,16 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         return result;
     }
 
-    private List<VaccineUrlBean> vaccinePageQuery(String url) throws IOException {
+    /**
+     * 适合2017~2019的格式
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    private List<VaccineUrlBean> vaccinePageQuery(String url, Integer yeah) throws IOException {
+        if(yeah == 2009) {
+            return vaccinePageQuery2007(url);
+        }
         List<VaccineUrlBean> listBatch = new ArrayList<>();
         String newUrl = url.replaceAll("/[^/]+$","/");
         Document doc = null;
@@ -82,13 +95,55 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         return listBatch;
     }
 
+    private List<VaccineUrlBean> vaccinePageQuery2007(String url) throws IOException {
+        List<VaccineUrlBean> listBeatch = new ArrayList<>();
+        String newUrl = url.replaceAll("/[^/]+$","/");
+        Document doc = Jsoup.connect(url).get();
+        Element eleTable = doc.getElementsByTag("table").get(11);
+        Elements elesBatch = eleTable.getElementsByTag("a");
+        for(Element ele: elesBatch) {
+            String href = newUrl+ele.attr("href");
+            String title = ele.text();
+            listBeatch.add(new VaccineUrlBean(0, href, title));
+        }
+
+        return  listBeatch;
+    }
+
+    private List<VaccineBatchBean> vaccineBatchQueryOld(Integer batchCode, String batchUrl) throws IOException {
+        Document doc = Jsoup.connect(batchUrl).maxBodySize(0).get();
+        List<VaccineBatchBean> list = new ArrayList<VaccineBatchBean>();
+        Elements eleTr = doc.select("tr");
+        for(int i=3;i<eleTr.size();i++) {
+            Elements ele = eleTr.get(i).select("td");
+
+            if("序号".equals(ele.get(0).text())) {
+                continue;
+            }
+            if ("".equals(ele.get(0).text())){
+                break;
+            }
+            VaccineBatchBean vbb;
+            vbb = new VaccineBatchBean(0,ele.get(0).text(),ele.get(1).text(),ele.get(2).text(),ele.get(3).text(),
+                    ele.get(4).text(),ele.get(5).text(),ele.get(6).text(),"","","","",
+                    ele.get(7).text(),"",batchCode,"","");
+            list.add(vbb);
+        }
+        return list;
+    }
     /**
-     * 处理一个页面的数据并返回 一个LIST
+     * 处理一个页面的数据并返回 一个LIST2016~2019
      * @param batchCode
      * @param batchUrl
      * @return
      */
     private List<VaccineBatchBean> vaccineBatchQuery(Integer batchCode, String batchUrl,Integer yeah) throws IOException {
+        if(yeah==2009){
+            if(batchUrl.indexOf("mht")>0) {
+                return new ArrayList<>();
+            }
+            return vaccineBatchQueryOld(batchCode,batchUrl);
+        }
         List<VaccineBatchBean> list = new ArrayList<VaccineBatchBean>();
         Document doc = null;
             doc = Jsoup.connect(batchUrl).maxBodySize(0).get();
@@ -117,7 +172,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
                 else {
                     vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
                             ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(6).text(), ele.get(7).text(),
-                            "", "", "", "ele.get(9).text()", ele.get(8).text(),
+                            "", "", "", ele.get(9).text(), ele.get(8).text(),
                             "", batchCode, "", "");
                 }
                 list.add(vbb);
