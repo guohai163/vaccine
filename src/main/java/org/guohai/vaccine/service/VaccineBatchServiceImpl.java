@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.RecursiveTask;
 
 @Service
 public class VaccineBatchServiceImpl implements VaccineBatchService {
@@ -33,6 +33,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
     public Result<String> nifdcVaccineData(String yeah,String index) {
 
         String catchUrl = "https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf"+yeah+"/index"+index+".html";
+//        catchUrl = "https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2012/ningxue2008/index.html";
         Integer iYeah = Integer.valueOf(yeah);
         Result<String> result = new Result<>(false,"");
         List<VaccineUrlBean> listUrl = null;
@@ -55,10 +56,11 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
             } catch (IOException e) {
                 result.setData(result.getData()+"url:["+urlBean.getBatchUrl()+"]出错\n"+e.getMessage()+"\n");
             }
-            if(listBatch.size()>0) {
+            if(listBatch!=null && listBatch.size()>0) {
                 System.out.println(listBatch.get(0));
+                System.out.println(listBatch.size());
             }
-            System.out.println(listBatch.size());
+
             for(VaccineBatchBean batchBean: listBatch) {
                 vaccineDao.addVaccineBatchData(batchBean);
             }
@@ -76,8 +78,8 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
      * @throws IOException
      */
     private List<VaccineUrlBean> vaccinePageQuery(String url, Integer yeah) throws IOException {
-        if(yeah == 2009) {
-            return vaccinePageQuery2007(url);
+        if(yeah <= 2012) {
+            return vaccinePageQueryOld(url);
         }
         List<VaccineUrlBean> listBatch = new ArrayList<>();
         String newUrl = url.replaceAll("/[^/]+$","/");
@@ -88,6 +90,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
             for(Element ele : elesBatch) {
 
                 String href=newUrl+ele.getElementsByTag("a").attr("href");
+                href = href.replaceAll("[^/\\.]+/\\.\\./","").replaceAll("[^/\\.]+/\\.\\./","").replaceAll("[^/\\.]+/\\.\\./","");
                 String title = ele.getElementsByTag("a").attr("title");
                 listBatch.add(new VaccineUrlBean(0,href,title));
             }
@@ -95,7 +98,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         return listBatch;
     }
 
-    private List<VaccineUrlBean> vaccinePageQuery2007(String url) throws IOException {
+    private List<VaccineUrlBean> vaccinePageQueryOld(String url) throws IOException {
         List<VaccineUrlBean> listBeatch = new ArrayList<>();
         String newUrl = url.replaceAll("/[^/]+$","/");
         Document doc = Jsoup.connect(url).get();
@@ -103,6 +106,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         Elements elesBatch = eleTable.getElementsByTag("a");
         for(Element ele: elesBatch) {
             String href = newUrl+ele.attr("href");
+            href = href.replaceAll("[^/\\.]+/\\.\\./","").replaceAll("[^/\\.]+/\\.\\./","").replaceAll("[^/\\.]+/\\.\\./","");
             String title = ele.text();
             listBeatch.add(new VaccineUrlBean(0, href, title));
         }
@@ -111,22 +115,30 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
     }
 
     private List<VaccineBatchBean> vaccineBatchQueryOld(Integer batchCode, String batchUrl) throws IOException {
-        Document doc = Jsoup.connect(batchUrl).maxBodySize(0).get();
-        List<VaccineBatchBean> list = new ArrayList<VaccineBatchBean>();
+
+        Document doc = Jsoup.connect(batchUrl).maxBodySize(0).ignoreContentType(true).get();
+        List<VaccineBatchBean> list = new ArrayList<>();
         Elements eleTr = doc.select("tr");
         for(int i=3;i<eleTr.size();i++) {
             Elements ele = eleTr.get(i).select("td");
-
-            if("序号".equals(ele.get(0).text())) {
+            if(ele.size()<8){
                 continue;
             }
-            if ("".equals(ele.get(0).text())){
-                break;
+            if ("".equals(ele.get(0).text()) || "序号".equals(ele.get(0).text()) || "　".equals(ele.get(0).text())) {
+                continue;
             }
+
             VaccineBatchBean vbb;
-            vbb = new VaccineBatchBean(0,ele.get(0).text(),ele.get(1).text(),ele.get(2).text(),ele.get(3).text(),
-                    ele.get(4).text(),ele.get(5).text(),ele.get(6).text(),"","","","",
-                    ele.get(7).text(),"",batchCode,"","");
+            if("注射剂".equals(ele.get(3).text())) {
+                vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(), ele.get(2).text(), ele.get(4).text(),
+                        ele.get(5).text(), ele.get(6).text(), ele.get(7).text(), "", "", "", "",
+                        ele.get(8).text(), "", batchCode, "", "");
+            }
+            else {
+                vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(), ele.get(2).text(), ele.get(3).text(),
+                        ele.get(4).text(), ele.get(5).text(), ele.get(6).text(), "", "", "", "",
+                        ele.get(7).text(), "", batchCode, "", "");
+            }
             list.add(vbb);
         }
         return list;
@@ -138,10 +150,8 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
      * @return
      */
     private List<VaccineBatchBean> vaccineBatchQuery(Integer batchCode, String batchUrl,Integer yeah) throws IOException {
-        if(yeah==2009){
-            if(batchUrl.indexOf("mht")>0) {
-                return new ArrayList<>();
-            }
+        if(yeah<=2012){
+
             return vaccineBatchQueryOld(batchCode,batchUrl);
         }
         List<VaccineBatchBean> list = new ArrayList<VaccineBatchBean>();
@@ -150,24 +160,54 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
             Elements eleDataArea = doc.select("[id=printArea]");
             Elements eleTr = eleDataArea.select("tr");
             for(int i = 1;i<eleTr.size();i++) {
+                if("https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2018/10477.html".equals(batchUrl)&& i<4){
+                    i = 4;
+                }
                 Elements ele = eleTr.get(i).select("td");
+                if ("".equals(ele.get(0).text()) || "序号".equals(ele.get(0).text()) || "　".equals(ele.get(0).text()) || "序 号".equals(ele.get(0).text())) {
+                    continue;
+                }
                 VaccineBatchBean vbb;
-                if(ele.size() == 13) {
+                if(ele.size() == 13) {//2019yeah
                     vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
                             ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(6).text(),
                             ele.get(7).text(), ele.get(8).text(), ele.get(9).text(), ele.get(10).text(), ele.get(11).text(),
                             ele.get(12).text(), batchCode, "", "");
+                }else  if (yeah == 2016 && ( "https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2016/8823.html".equals(batchUrl)||
+                        "https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2016/8898.html".equals(batchUrl)||
+                        "https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf2016/8846.html".equals(batchUrl))){
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
+                            ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(6).text(),
+                            "", ele.get(7).text(), "", ele.get(9).text(), ele.get(10).text(),
+                            "", batchCode, "", "");
                 }
                 else if(ele.size() == 12) {
                     vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
                             ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(6).text(),
                             ele.get(7).text(), ele.get(8).text(), ele.get(9).text(), ele.get(10).text(), ele.get(11).text(),
                             "", batchCode, "", "");
-                }else if(ele.size() == 11){
+                }else if (yeah==2017 && ele.size()==11) {
                     vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
                             ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(6).text(),
                             "", ele.get(7).text(), ele.get(8).text(), ele.get(9).text(), ele.get(10).text(),
                             "", batchCode, "", "");
+                } else if(ele.size() == 11){//2016部分
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
+                            ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(9).text(),
+                            "", ele.get(6).text(), ele.get(7).text(), ele.get(8).text(), ele.get(10).text(),
+                            "", batchCode, "", "");
+                }else  if (yeah == 2016 && ele.size()==9) {
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(), ele.get(2).text(), ele.get(3).text(),
+                            ele.get(4).text(), ele.get(6).text(), ele.get(7).text(), "", "", "", "",
+                            ele.get(8).text(), "", batchCode, "", "");
+                }else if (ele.size()==8||ele.size()==9) {//2012yeah,2013,2014,2015
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(), ele.get(2).text(), ele.get(3).text(),
+                            ele.get(4).text(), ele.get(5).text(), ele.get(6).text(), "", "", "", "",
+                            ele.get(7).text(), "", batchCode, "", "");
+                } else if (ele.size()==10) {//2015
+                    vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(), ele.get(2).text(), ele.get(3).text(),
+                            ele.get(4).text(), ele.get(7).text(), ele.get(8).text(), "", "", "", "",
+                            ele.get(9).text(), "", batchCode, "", "");
                 }
                 else {
                     vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
