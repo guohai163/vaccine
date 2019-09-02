@@ -1,10 +1,22 @@
-
+@import '../../weui.wxss';
 .vaccine-list {
   padding: 20rpx;
   font-size: 28rpx;
 }
+.result-warning {
+  border: 1rpx solid #aaa;
+  border-radius: 5rpx;
+  padding: 20rpx;
+  margin: 20rpx;
+  font-size: 28rpx;
+  background-color: #EC7063;
+}
+.no-display {
+  display: none;
+}
 .vaccine-foot {
   display: flex;
+  border-bottom: 1rpx solid #aaa;
 }
 .vaccine-status {
   padding-left: 20rpx;
@@ -20,8 +32,17 @@
   padding: 20rpx;
   font-size: 32rpx;
 }
-.mini-btn {
-  background-color: #3498DB;
-  border: 1rpx solid #3498DB;
-  border-radius: 10%;
+
+.result-item {
+  border: 1rpx solid #aaa;
+  border-radius: 5rpx;
+}
+.weui-form-preview__value {
+  color: #000;
+}
+.vaccine-more {
+  text-align: right;
+  border-top: 1rpx solid #aaa;
+  padding: 10rpx;
+  padding-right: 20rpx;
 }

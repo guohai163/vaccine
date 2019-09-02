@@ -1,4 +1,4 @@
-// pages/vaccine/result.js
+// pages/vaccine/resultmore.js
 Page({
 
   /**
@@ -7,14 +7,17 @@ Page({
   data: {
     vaccineData:null
   },
-
-  more:function(event) {
-
-    wx.navigateTo({
-      url: '/pages/vaccine/resultmore?data=' + JSON.stringify(this.data.vaccineData[event.currentTarget.id]),
+  copy: function(event) {
+    wx.setClipboardData({
+      data: event.target.dataset.url,
+      success(){
+        wx.showToast({
+          title: '原始地址复制成功',
+          icon: 'success',
+          duration: 2000
+        })
+      }
     })
-
-
   },
   /**
    * 生命周期函数--监听页面加载

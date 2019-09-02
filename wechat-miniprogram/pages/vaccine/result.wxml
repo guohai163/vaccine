@@ -1,14 +1,29 @@
 <view class="">
   <view class="result-title">批次号查询结果:{{vaccineData.length}}条记录</view>
+  <view class="result-warning {{vaccineData.length>0?'no-display':''}}">没有搜索到任何该批号数据，请确认输入正确，比如数字0或字母O的混淆。如果确认输入正确依然无数据请至中国食品药品检定研究院官网进行二次查询。
+  https://www.nifdc.org.cn
+  </view>
   <view class="vaccine-list" wx:for-index="idx" wx:for="{{vaccineData}}">
-    <view class="{{idx%2==0?'odd':'even'}}">
-      <view>{{item.productName}}</view>
-      <view>批次号：{{item.batchNo}}</view>
-      <view class="vaccine-foot">
-        <view>过期日期：{{item.expDate}}</view>
-        <view class="vaccine-status">状态：{{item.issueConclusion}}</view>
-        <view class="mini-btn" type="default" size="mini" data-url="{{item.batchUrl}}" bindtap="copy">原始地址</view>
-      </view>
+    <view class="{{idx%2==0?'odd':'even'}} result-item" id="{{idx}}" bindtap="more">
+      <view class="weui-form-preview__bd" >
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">品种名称</view>
+                    <view class="weui-form-preview__value">{{item.productName}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">批次号</view>
+                    <view class="weui-form-preview__value">{{item.batchNo}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">有效期</view>
+                    <view class="weui-form-preview__value">{{item.expDate}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">签发结论</view>
+                    <view class="weui-form-preview__value">{{item.issueConclusion}}</view>
+                </view>
+        </view>
+      <view class="vaccine-more">详细</view>
     </view>
   </view>
 </view>

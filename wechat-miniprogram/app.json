@@ -2,7 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/vaccine/result",
-    "pages/logs/logs"
+    "pages/vaccine/resultmore"
   ],
   "window": {
     "backgroundTextStyle": "light",
