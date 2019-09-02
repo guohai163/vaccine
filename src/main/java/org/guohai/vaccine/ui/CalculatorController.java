@@ -48,6 +48,12 @@ class CalculatorController {
     public Result<List<VaccineBatchBean>> searchVaccine(@PathVariable("vackey") String vackey) {
         return vaccineBatchService.searchVaccineBatch(vackey);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getlast")
+    public Result<String> getDataLast() {
+        return new Result<>(true,"2019-8-26");
+    }
     /**
      * 首页Action
      * @param model 接收页面传入

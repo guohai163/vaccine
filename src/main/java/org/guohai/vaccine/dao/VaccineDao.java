@@ -6,6 +6,7 @@ import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineUrlBean;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Date;
 import java.util.List;
 
 public interface VaccineDao {
@@ -20,11 +21,21 @@ public interface VaccineDao {
     @Select("SELECT count(*) FROM vaccine_url_tb WHERE batch_url=#{batchUrl}")
     Integer getBatchUrlCount(@Param("batchUrl") String batchUrl);
 
+    /**
+     * 按疫苗批次进行搜索
+     * @param vaccineKey
+     * @return
+     */
     @Select("SELECT vaccine_batch_tb.*,vaccine_url_tb.batch_url,vaccine_url_tb.batch_name " +
             "FROM vaccine_batch_tb join vaccine_url_tb on vaccine_batch_tb.url_code=vaccine_url_tb.code " +
             "WHERE batch_no like #{key} limit 10;")
     List<VaccineBatchBean>  searchVaccine(@Param("key") String vaccineKey);
 
+    /**
+     * 添加疫苗批次数据
+     * @param batch
+     * @return
+     */
     @Insert("INSERT INTO `vaccine_batch_tb`\n" +
             "(`page_code`,\n" +
             "`product_name`,\n" +
@@ -57,4 +68,9 @@ public interface VaccineDao {
             "#{batchData.urlCode});\n")
     Boolean addVaccineBatchData(@Param("batchData")VaccineBatchBean batch);
 
+    @Select("select last_update_date from vaccine_config_tb")
+    Date getLastDate();
+
+    @Update("update vaccine_config_tb set last_update_date = #{lastDate}")
+    Boolean setLastDate(@Param("lastDate") Date lastDate);
 }
