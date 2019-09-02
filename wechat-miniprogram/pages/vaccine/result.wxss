@@ -1,0 +1,27 @@
+
+.vaccine-list {
+  padding: 20rpx;
+  font-size: 28rpx;
+}
+.vaccine-foot {
+  display: flex;
+}
+.vaccine-status {
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+}
+.odd{
+  background-color: #FDEBD0;
+}
+.even {
+  background-color: #D4EFDF;
+}
+.result-title {
+  padding: 20rpx;
+  font-size: 32rpx;
+}
+.mini-btn {
+  background-color: #3498DB;
+  border: 1rpx solid #3498DB;
+  border-radius: 10%;
+}

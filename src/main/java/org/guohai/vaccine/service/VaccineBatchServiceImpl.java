@@ -71,6 +71,19 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
     }
 
     /**
+     * @param battchNo
+     * @return
+     */
+    @Override
+    public Result<List<VaccineBatchBean>> searchVaccineBatch(String battchNo) {
+        //TODO: 参数检查，长度4~10位
+
+        battchNo = "%"+battchNo+"%";
+        List<VaccineBatchBean> list = vaccineDao.searchVaccine(battchNo);
+        return new Result<>(true,list);
+    }
+
+    /**
      * 适合2017~2019的格式
      * @param url
      * @return

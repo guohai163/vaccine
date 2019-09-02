@@ -1,0 +1,41 @@
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 50px;
+}
+
+.index-logo {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.index-desc {
+  margin-top: 20rpx;
+  color: #888888;
+  font-size: 28rpx;
+}
+
+.vaccine-search {
+  margin-top: 40rpx;
+}
+.batchArea {
+  margin-bottom: 30rpx;
+  border-bottom: 1rpx solid #888888;
+  display: flex;
+}

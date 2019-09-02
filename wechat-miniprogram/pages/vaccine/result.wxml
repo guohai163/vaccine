@@ -1,0 +1,14 @@
+<view class="">
+  <view class="result-title">批次号查询结果:{{vaccineData.length}}条记录</view>
+  <view class="vaccine-list" wx:for-index="idx" wx:for="{{vaccineData}}">
+    <view class="{{idx%2==0?'odd':'even'}}">
+      <view>{{item.productName}}</view>
+      <view>批次号：{{item.batchNo}}</view>
+      <view class="vaccine-foot">
+        <view>过期日期：{{item.expDate}}</view>
+        <view class="vaccine-status">状态：{{item.issueConclusion}}</view>
+        <view class="mini-btn" type="default" size="mini" data-url="{{item.batchUrl}}" bindtap="copy">原始地址</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -4,6 +4,9 @@ package org.guohai.vaccine.dao;
 import org.apache.ibatis.annotations.*;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineUrlBean;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 public interface VaccineDao {
 
@@ -16,6 +19,11 @@ public interface VaccineDao {
 
     @Select("SELECT count(*) FROM vaccine_url_tb WHERE batch_url=#{batchUrl}")
     Integer getBatchUrlCount(@Param("batchUrl") String batchUrl);
+
+    @Select("SELECT vaccine_batch_tb.*,vaccine_url_tb.batch_url,vaccine_url_tb.batch_name " +
+            "FROM vaccine_batch_tb join vaccine_url_tb on vaccine_batch_tb.url_code=vaccine_url_tb.code " +
+            "WHERE batch_no like #{key} limit 10;")
+    List<VaccineBatchBean>  searchVaccine(@Param("key") String vaccineKey);
 
     @Insert("INSERT INTO `vaccine_batch_tb`\n" +
             "(`page_code`,\n" +

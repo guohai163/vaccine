@@ -43,6 +43,11 @@ class CalculatorController {
         return  vaccineBatchService.nifdcVaccineData(yeah,index);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/search/{vackey}")
+    public Result<List<VaccineBatchBean>> searchVaccine(@PathVariable("vackey") String vackey) {
+        return vaccineBatchService.searchVaccineBatch(vackey);
+    }
     /**
      * 首页Action
      * @param model 接收页面传入
