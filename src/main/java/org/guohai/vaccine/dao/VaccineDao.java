@@ -28,7 +28,7 @@ public interface VaccineDao {
      */
     @Select("SELECT vaccine_batch_tb.*,vaccine_url_tb.batch_url,vaccine_url_tb.batch_name " +
             "FROM vaccine_batch_tb join vaccine_url_tb on vaccine_batch_tb.url_code=vaccine_url_tb.code " +
-            "WHERE batch_no like #{key} limit 10;")
+            "WHERE batch_no like #{key} limit 30;")
     List<VaccineBatchBean>  searchVaccine(@Param("key") String vaccineKey);
 
     /**

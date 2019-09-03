@@ -24,7 +24,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.8.1",
 	"appid": "wx8a41f99ed88d526f",
-	"projectname": "%E6%89%B9%E5%8F%B7%E6%9F%A5%E8%AF%A2",
+	"projectname": "vaccine",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

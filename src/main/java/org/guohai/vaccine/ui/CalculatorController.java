@@ -46,6 +46,7 @@ class CalculatorController {
     @ResponseBody
     @RequestMapping(value = "/search/{vackey}")
     public Result<List<VaccineBatchBean>> searchVaccine(@PathVariable("vackey") String vackey) {
+        vackey = vackey.replaceAll("%","");
         return vaccineBatchService.searchVaccineBatch(vackey);
     }
 

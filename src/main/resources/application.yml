@@ -6,7 +6,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://192.168.110.4/vaccine_db?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      url: jdbc:mysql://172.17.0.3/vaccine_db?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
       username: vaccine
       password: vaccine!QAZ
   freemarker:
@@ -19,6 +19,9 @@ spring:
     expose-request-attributes: true
     expose-session-attributes: true
     request-context-attribute: request
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
 my-data:
   mapVaccine:
     HepB: {keyName: HepB,des: 乙肝疫苗,accinationMonthAge: [1,2,0,0,0,0,3,0,0,0,0,0,0,0,0,0] ,state: true}

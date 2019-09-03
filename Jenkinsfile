@@ -3,6 +3,8 @@ pipeline {
   environment {
     TAG_SERVER = 'guohai@guohai.org'
     TAG_PATH = '/data/vaccine.guohai.org'
+    //目标服务器启动停止springboot脚本路径
+    TAG_SCRIPT = '/data/spring-boot.sh'
   }
 
   stages {
@@ -23,7 +25,7 @@ pipeline {
             withCredentials([sshUserPrivateKey(credentialsId: 'guohai.org', keyFileVariable: 'guohai_org_key', passphraseVariable: '', usernameVariable: '')]) {
                 sh "scp -i ${guohai_org_key} ${WORKSPACE}/target/*.jar ${TAG_SERVER}:${TAG_PATH}/${JOB_BASE_NAME}.jar"
                 sh "ssh -i ${guohai_org_key} ${TAG_SERVER} md5sum ${TAG_PATH}/${JOB_BASE_NAME}.jar"
-                sh "ssh -i ${guohai_org_key} ${TAG_SERVER} ${TAG_PATH}/spring-boot.sh restart ${TAG_PATH}/${JOB_BASE_NAME}.jar"
+                sh "ssh -i ${guohai_org_key} ${TAG_SERVER} ${TAG_SCRIPT} restart ${TAG_PATH}/${JOB_BASE_NAME}.jar --spring.config.location=${TAG_PATH}/application.yml"
             }
 
         }
