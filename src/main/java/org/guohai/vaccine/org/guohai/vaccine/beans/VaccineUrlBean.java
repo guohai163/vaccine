@@ -14,4 +14,6 @@ public class VaccineUrlBean {
     private String batchUrl;
 
     private String batchName;
+
+    private String batchDate;
 }

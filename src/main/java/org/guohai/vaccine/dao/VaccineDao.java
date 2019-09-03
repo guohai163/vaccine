@@ -1,6 +1,7 @@
 package org.guohai.vaccine.dao;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.ibatis.annotations.*;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineUrlBean;
@@ -12,14 +13,17 @@ import java.util.List;
 public interface VaccineDao {
 
     @Insert("INSERT INTO `vaccine_url_tb`\n" +
-            "(`batch_url`,`batch_name`)\n" +
+            "(`batch_url`,`batch_name`,`batch_date`)\n" +
             "VALUES\n" +
-            "(#{batch_url.batchUrl},#{batch_url.batchName});\n")
+            "(#{batch_url.batchUrl},#{batch_url.batchName},#{batch_url.batchDate});\n")
     @Options(useGeneratedKeys = true, keyProperty = "batch_url.code")
     Boolean addBatchUrl(@Param("batch_url") VaccineUrlBean batchUrl);
 
     @Select("SELECT count(*) FROM vaccine_url_tb WHERE batch_url=#{batchUrl}")
     Integer getBatchUrlCount(@Param("batchUrl") String batchUrl);
+
+    @Update("update vaccine_url_tb set batch_date=#{batch.batchDate} WHERE batch_url=#{batch.batchUrl}")
+    Boolean updateCatchDate(@Param("batch") VaccineUrlBean batch);
 
     /**
      * 按疫苗批次进行搜索
@@ -68,9 +72,11 @@ public interface VaccineDao {
             "#{batchData.urlCode});\n")
     Boolean addVaccineBatchData(@Param("batchData")VaccineBatchBean batch);
 
-    @Select("select last_update_date from vaccine_config_tb")
-    Date getLastDate();
+    @Select("SELECT batch_date FROM vaccine_db.vaccine_url_tb order by code desc limit 1;")
+    String getLastDate();
 
     @Update("update vaccine_config_tb set last_update_date = #{lastDate}")
     Boolean setLastDate(@Param("lastDate") Date lastDate);
+
+
 }

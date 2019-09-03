@@ -99,7 +99,9 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
                 String href=newUrl+ele.getElementsByTag("a").attr("href");
                 href = href.replaceAll("[^/\\.]+/\\.\\./","").replaceAll("[^/\\.]+/\\.\\./","").replaceAll("[^/\\.]+/\\.\\./","");
                 String title = ele.getElementsByTag("a").attr("title");
-                listBatch.add(new VaccineUrlBean(0,href,title));
+                String date = ele.getElementsByTag("span").text();
+                listBatch.add(new VaccineUrlBean(0,href,title,date));
+                vaccineDao.updateCatchDate(new VaccineUrlBean(0,href,title,date));
             }
 
         return listBatch;
