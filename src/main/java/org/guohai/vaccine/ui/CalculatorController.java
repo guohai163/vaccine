@@ -5,9 +5,8 @@ import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineDateBean;
 import org.guohai.vaccine.service.VaccineBatchService;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,16 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * 程序主Controller负责展示和计算
  */
 @Controller
 class CalculatorController {
+    private static final Logger LOG  = LoggerFactory.getLogger(CalculatorController.class);
 
     @Autowired
     private HttpServletRequest request;
@@ -53,7 +53,8 @@ class CalculatorController {
     @ResponseBody
     @RequestMapping(value = "/getlast")
     public Result<String> getDataLast() {
-        return new Result<>(true,"2019-8-26");
+        LOG.info("user in,ip:"+request.getRemoteAddr()+",UA:"+request.getHeader("User-Agent"));
+        return vaccineBatchService.getLastDate();
     }
     /**
      * 首页Action

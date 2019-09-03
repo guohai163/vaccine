@@ -19,4 +19,10 @@ public interface VaccineBatchService {
      * @return
      */
     Result<List<VaccineBatchBean>> searchVaccineBatch(String battchNo);
+
+    /**
+     * 获取最后更新时间
+     * @return
+     */
+    Result<String> getLastDate();
 }

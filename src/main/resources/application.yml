@@ -22,6 +22,9 @@ spring:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+logging:
+  path: ./
+  file: vaccine.log
 my-data:
   mapVaccine:
     HepB: {keyName: HepB,des: 乙肝疫苗,accinationMonthAge: [1,2,0,0,0,0,3,0,0,0,0,0,0,0,0,0] ,state: true}

@@ -24,6 +24,11 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
 
     @Autowired
     VaccineDao vaccineDao;
+
+    /**
+     * 最后更新时间
+     */
+    private static String lastDate="";
     /**
      * nifdc数据处理
      *
@@ -48,6 +53,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
                 continue;
             }
             vaccineDao.addBatchUrl(urlBean);
+            lastDate = urlBean.getBatchDate();
             System.out.println(urlBean.getBatchName());
             List<VaccineBatchBean> listBatch = null;
             try {
@@ -81,6 +87,19 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         battchNo = "%"+battchNo+"%";
         List<VaccineBatchBean> list = vaccineDao.searchVaccine(battchNo);
         return new Result<>(true,list);
+    }
+
+    /**
+     * 获取最后更新时间
+     *
+     * @return
+     */
+    @Override
+    public Result<String> getLastDate() {
+        if("".equals(lastDate)){
+            lastDate=vaccineDao.getLastDate();
+        }
+        return new Result<>(true,lastDate);
     }
 
     /**
