@@ -1,11 +1,9 @@
 package org.guohai.vaccine.dao;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.ibatis.annotations.*;
-import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
-import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineUrlBean;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.guohai.vaccine.beans.VaccineBatchBean;
+import org.guohai.vaccine.beans.VaccineUrlBean;
 
 import java.util.Date;
 import java.util.List;

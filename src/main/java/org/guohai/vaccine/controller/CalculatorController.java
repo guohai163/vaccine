@@ -1,9 +1,9 @@
-package org.guohai.vaccine.ui;
+package org.guohai.vaccine.controller;
 
-import org.guohai.vaccine.org.guohai.vaccine.beans.BindDataToBean;
-import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
-import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
-import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineDateBean;
+import org.guohai.vaccine.beans.BindDataToBean;
+import org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.beans.VaccineBatchBean;
+import org.guohai.vaccine.beans.VaccineDateBean;
 import org.guohai.vaccine.service.VaccineBatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package org.guohai.vaccine.service;
 
-import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
-import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
+import org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.beans.VaccineBatchBean;
 
 import java.util.List;
 

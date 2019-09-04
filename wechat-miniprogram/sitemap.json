@@ -3,7 +3,7 @@
   "rules": [{
   "action": "allow",
   "page": "/pages/vaccine/result",
-  "params": "query",
+  "params": ["query"],
   "matching": "inclusive"
   },{
     "action": "allow",

@@ -1,6 +1,6 @@
-package org.guohai.vaccine.ui;
+package org.guohai.vaccine.controller;
 
-import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.service.MiniProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;

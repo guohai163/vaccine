@@ -1,9 +1,9 @@
 package org.guohai.vaccine.service;
 
 import org.guohai.vaccine.dao.VaccineDao;
-import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
-import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineBatchBean;
-import org.guohai.vaccine.org.guohai.vaccine.beans.VaccineUrlBean;
+import org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.beans.VaccineBatchBean;
+import org.guohai.vaccine.beans.VaccineUrlBean;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

@@ -1,6 +1,6 @@
 package org.guohai.vaccine.service;
 
-import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.beans.Result;
 
 public interface MiniProgramService {
 

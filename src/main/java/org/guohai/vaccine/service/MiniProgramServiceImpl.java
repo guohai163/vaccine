@@ -7,11 +7,10 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.guohai.vaccine.org.guohai.vaccine.beans.Result;
+
+import org.guohai.vaccine.beans.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.boot.configurationprocessor.json.JSONTokener;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

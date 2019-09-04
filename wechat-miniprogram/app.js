@@ -15,6 +15,6 @@ App({
   },
   globalData: {
     lastDate: null,
-    serverUrl: "http://192.168.88.12:8000"
+    serverUrl: "https://vaccine.zhongdaiqi.com"
   }
 })

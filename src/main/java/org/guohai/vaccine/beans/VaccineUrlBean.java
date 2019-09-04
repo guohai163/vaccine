@@ -1,4 +1,4 @@
-package org.guohai.vaccine.org.guohai.vaccine.beans;
+package org.guohai.vaccine.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
