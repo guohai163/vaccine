@@ -1,5 +1,5 @@
 /**index.wxss**/
-@import '../../weui.wxss';
+@import '/components/weui.wxss';
 
 .miniappinfo {
   display: flex;

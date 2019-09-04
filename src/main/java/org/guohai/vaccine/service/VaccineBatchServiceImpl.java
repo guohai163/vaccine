@@ -8,11 +8,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
 @Service
 public class VaccineBatchServiceImpl implements VaccineBatchService {
 
+    private static final Logger LOG  = LoggerFactory.getLogger(VaccineBatchServiceImpl.class);
     @Autowired
     VaccineDao vaccineDao;
 

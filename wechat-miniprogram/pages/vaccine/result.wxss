@@ -1,4 +1,4 @@
-@import '../../weui.wxss';
+@import '/components/weui.wxss';
 .vaccine-list {
   padding: 20rpx;
   font-size: 28rpx;

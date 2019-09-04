@@ -11,4 +11,6 @@
     <button bindtap="search" class="vaccine-search" type="primary" plain="true">查询</button>
   </view>
 </view>
-<view class="weui-footer weui-footer_fixed-bottom">数据最后更新时间:{{lastDate}}</view>
+<view class="weui-footer weui-footer_fixed-bottom">
+<official-account></official-account>
+数据最后更新时间:{{lastDate}}</view>

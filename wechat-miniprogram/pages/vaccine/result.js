@@ -1,11 +1,17 @@
 // pages/vaccine/result.js
+//获取应用实例
+const app = getApp()
+
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    vaccineData:null
+    vaccineData:null,
+    showLoading:true,
+    showError: true
   },
 
   more:function(event) {
@@ -20,9 +26,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      vaccineData: JSON.parse(options.data)
-    });
+
+    wx.request({
+      url: app.globalData.serverUrl +'/search/' + options.query,
+      success: res=>{
+        console.log(res.data);
+        if(res.data.status==false || res.data.data.length<1){
+          this.setData({
+            showLoading: false,
+            showError: false
+          })
+        }
+        this.setData({
+          vaccineData: res.data.data,
+          showLoading: false
+        });
+      }
+    })
+
   },
 
   /**

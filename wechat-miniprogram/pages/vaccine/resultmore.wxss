@@ -1,4 +1,4 @@
-@import '../../weui.wxss';
+@import '/components/weui.wxss';
 .weui-form-preview__value{
   color: #000;
 }

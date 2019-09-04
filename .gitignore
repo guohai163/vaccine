@@ -33,3 +33,4 @@ classes/
 
 .DS_Store
 *.log
+*.gz

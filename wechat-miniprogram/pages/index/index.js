@@ -17,30 +17,21 @@ Page({
         duration: 2000
       })
     }else{
-      wx.request({
-        url: 'https://vaccine.zhongdaiqi.com/search/'+this.data.batchNo,
-        success (res) {
-          console.log(res.data);
-          if (res.data.status) {
-            console.log(JSON.stringify(res.data.data));
-            wx.navigateTo({
-              url: '/pages/vaccine/result?data=' + JSON.stringify(res.data.data),
-            })
-          }
-        }
+
+      wx.navigateTo({
+        url: '/pages/vaccine/result?query='+this.data.batchNo
       });
     }
   },
   batchNoInput: function(e) {
     this.setData({
-      batchNo: e.detail.value.replace(/\s+/g, '')
+      batchNo: e.detail.value.replace(/\s+/g, '').replace(/%/g,'')
     });
   },
   onLoad: function () {
     wx.request({
-      url: 'https://vaccine.zhongdaiqi.com/getlast',
+      url: app.globalData.serverUrl+'/getlast',
       success: res => {
-        console.log(res.data.data);
         
         this.setData({
           lastDate: res.data.data
