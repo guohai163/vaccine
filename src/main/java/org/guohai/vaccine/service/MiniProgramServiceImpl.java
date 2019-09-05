@@ -1,7 +1,5 @@
 package org.guohai.vaccine.service;
 
-
-import com.oracle.tools.packager.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -10,6 +8,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import org.guohai.vaccine.beans.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -24,6 +24,8 @@ import java.io.InputStreamReader;
 @Component
 @ConfigurationProperties
 public class MiniProgramServiceImpl implements MiniProgramService {
+
+    private static final Logger LOG  = LoggerFactory.getLogger(MiniProgramServiceImpl.class);
 
     @Value("${my-data.wechat-mini.appid}")
     private String appid;
@@ -57,7 +59,7 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                         strResult.append(line+"/n");
                     }
                     wcResult = new JSONObject(strResult.toString());
-                    Log.info(String.format("微信登录请求结果：%s",wcResult));
+                    LOG.info(String.format("微信登录请求结果：%s",wcResult));
                 }
             }
         }catch (Exception e){
