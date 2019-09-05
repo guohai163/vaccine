@@ -8,7 +8,7 @@ spring:
     druid:
       url: jdbc:mysql://172.17.0.3/vaccine_db?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
       username: vaccine
-      password: vaccine!QAZ
+      password: <password>
   freemarker:
     template-loader-path: classpath:/web/
     cache: false
@@ -26,6 +26,9 @@ logging:
   path: ./
   file: vaccine.log
 my-data:
+  wechat-mini:
+    appid: <appid>
+    appsecret: <appsecret>
   mapVaccine:
     HepB: {keyName: HepB,des: 乙肝疫苗,accinationMonthAge: [1,2,0,0,0,0,3,0,0,0,0,0,0,0,0,0] ,state: true}
     BCG: {keyName: BCG,des: 卡介疫苗,accinationMonthAge: [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] ,state: true}
