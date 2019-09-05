@@ -4,10 +4,12 @@ package org.guohai.vaccine.dao;
 import org.apache.ibatis.annotations.*;
 import org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.beans.VaccineUrlBean;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface VaccineDao {
 
     @Insert("INSERT INTO `vaccine_url_tb`\n" +

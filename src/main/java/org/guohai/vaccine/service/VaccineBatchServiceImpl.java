@@ -64,7 +64,9 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
             }
             vaccineDao.addBatchUrl(urlBean);
             lastDate = urlBean.getBatchDate();
-            System.out.println(urlBean.getBatchName());
+
+            LOG.info(urlBean.getBatchName());
+
             List<VaccineBatchBean> listBatch = null;
             try {
                 listBatch = vaccineBatchQuery(urlBean.getCode(),urlBean.getBatchUrl(),iYeah);
@@ -78,7 +80,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
                 result.setData("抓取生物制品数据时出现了不楞转换的数据，需要进行回滚操作");
                 return result;
             }
-
+            LOG.info(String.format("在URL[%s]抓取到数据[%d]条",urlBean.getBatchUrl(),listBatch.size()));
             for(VaccineBatchBean batchBean: listBatch) {
                 vaccineDao.addVaccineBatchData(batchBean);
             }

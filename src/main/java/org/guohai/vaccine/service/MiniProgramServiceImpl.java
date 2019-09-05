@@ -1,6 +1,7 @@
 package org.guohai.vaccine.service;
 
 
+import com.oracle.tools.packager.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -38,7 +39,6 @@ public class MiniProgramServiceImpl implements MiniProgramService {
     @Override
     public Result<String> oalogin(String code) {
         String requestWCUrl = String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",appid,appsecret,code);
-        System.out.println(requestWCUrl);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(requestWCUrl);
@@ -57,7 +57,7 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                         strResult.append(line+"/n");
                     }
                     wcResult = new JSONObject(strResult.toString());
-                    System.out.println(wcResult);
+                    Log.info(String.format("微信登录请求结果：%s",wcResult));
                 }
             }
         }catch (Exception e){

@@ -10,7 +10,7 @@
   margin-top: 50px;
 }
 .input-search {
-  padding-left: 20rpx;
+  padding-left: 10rpx;
 }
 .index-logo {
   width: 120rpx;

@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/vaccine/result",
-    "pages/vaccine/resultmore"
+    "pages/vaccine/resultmore",
+    "pages/index/easter-egg"
   ],
   "window": {
     "backgroundTextStyle": "light",

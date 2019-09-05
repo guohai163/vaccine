@@ -7,6 +7,11 @@ Page({
     batchNo: '',
     lastDate: ''
   },
+  easterEgg: function() {
+    wx.navigateTo({
+      url: '/pages/index/easter-egg',
+    })
+  },
   //事件处理函数
   search: function() {
     console.log(this.data.batchNo);
