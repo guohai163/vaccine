@@ -4,6 +4,7 @@ import org.guohai.vaccine.dao.VaccineDao;
 import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.beans.VaccineUrlBean;
+import org.guohai.vaccine.utilities.VerificationUtilities;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -37,6 +40,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
      * @return
      */
     @Override
+    @Transactional
     public Result<String> nifdcVaccineData(String yeah,String index) {
 
         String catchUrl = "https://www.nifdc.org.cn/nifdc/zhtzhl/swzppqf/shwzhppqf"+yeah+"/index"+index+".html";
@@ -48,6 +52,10 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         } catch (IOException e) {
             e.printStackTrace();
             result.setData(result.getData()+"url:[index.html]出错\n"+e.getMessage()+"\n");
+        }
+        if(listUrl == null || listUrl.size() ==0){
+            LOG.error("列表抓取过程失败，请检查");
+            return new Result<>(false,"数据抓取失败");
         }
         for(VaccineUrlBean urlBean : listUrl) {
             // 检查库里是否存在，如不存在继续，如存在跳过
@@ -63,9 +71,12 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
             } catch (IOException e) {
                 result.setData(result.getData()+"url:["+urlBean.getBatchUrl()+"]出错\n"+e.getMessage()+"\n");
             }
-            if(listBatch!=null && listBatch.size()>0) {
-                System.out.println(listBatch.get(0));
-                System.out.println(listBatch.size());
+            if(null == listBatch || listBatch.size()==0) {
+                LOG.error("抓取生物制品数据时出现了不楞转换的数据，需要进行回滚操作");
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                result.setStatus(false);
+                result.setData("抓取生物制品数据时出现了不楞转换的数据，需要进行回滚操作");
+                return result;
             }
 
             for(VaccineBatchBean batchBean: listBatch) {
@@ -121,8 +132,13 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
                 href = href.replaceAll("[^/\\.]+/\\.\\./","").replaceAll("[^/\\.]+/\\.\\./","").replaceAll("[^/\\.]+/\\.\\./","");
                 String title = ele.getElementsByTag("a").attr("title");
                 String date = ele.getElementsByTag("span").text();
-                listBatch.add(new VaccineUrlBean(0,href,title,date));
-                vaccineDao.updateCatchDate(new VaccineUrlBean(0,href,title,date));
+                if(VerificationUtilities.valiadteHttpProtocol(href) && VerificationUtilities.validateEngDate(date)) {
+                    listBatch.add(new VaccineUrlBean(0, href, title, date));
+                }else {
+                    LOG.warn(String.format("抓取列表数据时出现了异常，不再继续[%s][%s]",url,href));
+                    return null;
+                }
+
             }
 
         return listBatch;
@@ -148,11 +164,22 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
                 if ("".equals(ele.get(0).text()) || "序号".equals(ele.get(0).text()) || "　".equals(ele.get(0).text()) || "序 号".equals(ele.get(0).text())) {
                     continue;
                 }
-                VaccineBatchBean vbb = new VaccineBatchBean(0, ele.get(0).text(), ele.get(1).text(),
-                            ele.get(2).text(), ele.get(3).text(), ele.get(4).text(), ele.get(5).text(), ele.get(6).text(),
-                            ele.get(7).text(), ele.get(8).text(), ele.get(9).text(), ele.get(10).text(), ele.get(11).text(),
+                String pageCode = ele.get(0).text();
+                String batchNo = ele.get(3).text();
+                String expDate = ele.get(5).text();
+                String issueDate = ele.get(10).text();
+                //检查几个关键字段是否合规
+                if(VerificationUtilities.validateInteger(pageCode) && VerificationUtilities.validateBatchNo(batchNo) &&
+                    VerificationUtilities.validateChineseDate(expDate) && VerificationUtilities.validateChineseDate(issueDate)) {
+                    VaccineBatchBean vbb = new VaccineBatchBean(0, pageCode, ele.get(1).text(),
+                            ele.get(2).text(), batchNo, ele.get(4).text(),expDate, ele.get(6).text(),
+                            ele.get(7).text(), ele.get(8).text(), ele.get(9).text(), issueDate, ele.get(11).text(),
                             ele.get(12).text(), batchCode, "", "");
-                list.add(vbb);
+                    list.add(vbb);
+                }else {
+                    LOG.warn( String.format("出现不合规数据URL[%s],页面内编号:%s",batchUrl,ele.get(0).text()));
+                    return null;
+                }
             }
 
 
