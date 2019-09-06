@@ -34,6 +34,33 @@ Page({
     });
   },
   onLoad: function () {
+    if(app.globalData.userCode == ''){
+      wx.getStorage({
+        key: 'userCode',
+        success: function (res) {
+          console.log("从持久存储内加载成功"+res.data)
+          app.globalData.userCode = res.data;
+        },
+        fail: function (res) {
+          wx.login({
+            success: res => {
+              app.globalData.userCode = res.code;
+              wx.request({
+                url: app.globalData.serverUrl + '/mini/oalogin?code=' + res.code,
+                success: data => {
+                  //持久化存储，这里我们把code当为临时用户编号，openid只存储在服务器里
+                  wx.setStorage({
+                    key: "userCode",
+                    data: app.globalData.userCode
+
+                  })
+                }
+              })
+            }
+          })
+        }
+      })
+    }
     wx.request({
       url: app.globalData.serverUrl+'/getlast',
       success: res => {
