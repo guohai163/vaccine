@@ -8,8 +8,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.beans.WechatUserBean;
+import org.guohai.vaccine.dao.VaccineDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -27,6 +30,9 @@ public class MiniProgramServiceImpl implements MiniProgramService {
 
     private static final Logger LOG  = LoggerFactory.getLogger(MiniProgramServiceImpl.class);
 
+    @Autowired
+    VaccineDao vaccineDao;
+
     @Value("${my-data.wechat-mini.appid}")
     private String appid;
 
@@ -39,7 +45,7 @@ public class MiniProgramServiceImpl implements MiniProgramService {
      * @return
      */
     @Override
-    public Result<String> oalogin(String code) {
+    public Result<String> oalogin(String code,String chan) {
         String requestWCUrl = String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",appid,appsecret,code);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -59,7 +65,14 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                         strResult.append(line+"/n");
                     }
                     wcResult = new JSONObject(strResult.toString());
+                    //{"session_key":"EF5qJaPcIUj5yV5\/ascaig==","openid":"o6pfI5Q3R1ugslEcwexMpYDZ2WDg"
+                    WechatUserBean wechatUserBean = new WechatUserBean(wcResult.get("openid").toString(),code,wcResult.get("session_key").toString(),chan);
                     LOG.info(String.format("微信登录请求结果：%s",wcResult));
+                    if(vaccineDao.getUserByOpenId(wechatUserBean.getOpenId()) == null) {
+                        vaccineDao.addUser(wechatUserBean);
+                    }else {
+                        vaccineDao.setUser(wechatUserBean);
+                    }
                 }
             }
         }catch (Exception e){

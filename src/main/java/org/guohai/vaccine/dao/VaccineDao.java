@@ -4,6 +4,7 @@ package org.guohai.vaccine.dao;
 import org.apache.ibatis.annotations.*;
 import org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.beans.VaccineUrlBean;
+import org.guohai.vaccine.beans.WechatUserBean;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -77,6 +78,17 @@ public interface VaccineDao {
 
     @Update("update vaccine_config_tb set last_update_date = #{lastDate}")
     Boolean setLastDate(@Param("lastDate") Date lastDate);
+
+
+    @Insert("INSERT INTO vaccine_wechat_user_tb(open_id,login_code,session_key,chan)VALUES(#{user.openId},#{user.loginCode},#{user.sessionKey},#{user.chan})")
+    Boolean addUser(@Param("user")WechatUserBean user);
+
+    @Update("UPDATE vaccine_wechat_user_tb SET login_code=#{user.loginCode} WHERE open_id=#{user.openId}")
+    Boolean setUser(@Param("user")WechatUserBean user);
+
+    @Select("SELECT open_id,login_code FROM vaccine_wechat_user_tb WHERE open_id=#{openId}")
+    WechatUserBean getUserByOpenId(@Param("openId")String openId);
+
 
 
 }

@@ -15,8 +15,8 @@ public class MiniProgramController {
     MiniProgramService miniProgramService;
 
     @RequestMapping(value = "/oalogin")
-    public Result<String> oalogin(@ModelAttribute("code") String code) {
-        return miniProgramService.oalogin(code);
+    public Result<String> oalogin(@ModelAttribute("code") String code,@ModelAttribute("chan") String chan) {
+        return miniProgramService.oalogin(code,chan);
     }
 
 }

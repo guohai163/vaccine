@@ -35,6 +35,7 @@ Page({
   },
   onLoad: function () {
     if(app.globalData.userCode == ''){
+      console.log("全局变量中未取到数据");
       wx.getStorage({
         key: 'userCode',
         success: function (res) {
