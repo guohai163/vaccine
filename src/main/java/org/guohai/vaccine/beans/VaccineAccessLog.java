@@ -21,5 +21,9 @@ public class VaccineAccessLog {
 
     private String queryParam;
 
+    private String accessFromid;
+
+    private Integer queryResultNum;
+    
     private Date accessDate;
 }

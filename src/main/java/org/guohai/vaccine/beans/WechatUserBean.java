@@ -3,6 +3,8 @@ package org.guohai.vaccine.beans;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 public class WechatUserBean {
@@ -13,5 +15,7 @@ public class WechatUserBean {
 
     private String sessionKey;
 
-    private String chan;
+    private String src;
+
+    private Date createTime;
 }

@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -45,9 +42,11 @@ class CalculatorController {
 
     @ResponseBody
     @RequestMapping(value = "/search/{vackey}")
-    public Result<List<VaccineBatchBean>> searchVaccine(@PathVariable("vackey") String vackey) {
+    public Result<List<VaccineBatchBean>> searchVaccine(@PathVariable("vackey") String vackey,
+                                                        @RequestHeader(value = "X-Real-IP",required = false) String userIp,
+                                                        @RequestHeader(value = "User-Agent", required =  false) String userAgent) {
         vackey = vackey.replaceAll("%","");
-        return vaccineBatchService.searchVaccineBatch(vackey);
+        return vaccineBatchService.searchVaccineBatch(vackey, null, null,userIp , userAgent);
     }
 
     @ResponseBody

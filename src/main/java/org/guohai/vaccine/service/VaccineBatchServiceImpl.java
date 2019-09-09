@@ -1,9 +1,7 @@
 package org.guohai.vaccine.service;
 
+import org.guohai.vaccine.beans.*;
 import org.guohai.vaccine.dao.VaccineDao;
-import org.guohai.vaccine.beans.Result;
-import org.guohai.vaccine.beans.VaccineBatchBean;
-import org.guohai.vaccine.beans.VaccineUrlBean;
 import org.guohai.vaccine.utilities.VerificationUtilities;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -93,14 +91,36 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
 
     /**
      * @param battchNo
+     * @param loginCode
+     * @param formId
+     * @param userIP
+     * @param userAgent
      * @return
      */
     @Override
-    public Result<List<VaccineBatchBean>> searchVaccineBatch(String battchNo) {
+    public Result<List<VaccineBatchBean>> searchVaccineBatch(String battchNo, String loginCode, String formId, String userIP, String userAgent) {
+        String openId ="";
+        //查用户openId
+        if(loginCode!=null && loginCode.length()>1){
+            if(MiniProgramServiceImpl.userMap.get(loginCode)!=null){
+                openId = MiniProgramServiceImpl.userMap.get(loginCode).getOpenId();
+            }else {
+                WechatUserBean wechatUserBean = vaccineDao.getUserByLoginCode(loginCode);
+                if(wechatUserBean!=null){
+                    openId = wechatUserBean.getOpenId();
+                    MiniProgramServiceImpl.userMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
+                }
+            }
+        }
+
+
         //TODO: 参数检查，长度4~10位
 
-        battchNo = "%"+battchNo+"%";
-        List<VaccineBatchBean> list = vaccineDao.searchVaccine(battchNo);
+//        battchNo = "%"+battchNo+"%";
+        List<VaccineBatchBean> list = vaccineDao.searchVaccine(String.format("%%%s%%",battchNo));
+        //写日志
+        VaccineAccessLog accessLog = new VaccineAccessLog(0,openId,userAgent,userIP,"search",battchNo,formId,list.size(),new Date());
+        vaccineDao.addAccessLog(accessLog);
         return new Result<>(true,list);
     }
 

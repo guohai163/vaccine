@@ -50,6 +50,8 @@ CREATE TABLE `vaccine_batch_tb` (
 CREATE TABLE `vaccine_db`.`vaccine_wechat_user_tb` (
   `open_id` VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci' NOT NULL,
   `login_code` VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci' NOT NULL,
+`session_key` VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci' NOT NULL,
+`src` VARCHAR(45)  CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci' NOT NULL,
   PRIMARY KEY (`open_id`));
   
   CREATE TABLE `vaccine_db`.`vaccine_access_log` (
@@ -59,6 +61,7 @@ CREATE TABLE `vaccine_db`.`vaccine_wechat_user_tb` (
   `user_ip` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci' NULL,
   `service_category` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci' NULL,
   `query_param` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci' NULL,
+   
   `access_date` DATETIME NULL,
   PRIMARY KEY (`code`));
 

@@ -16,9 +16,13 @@ public interface VaccineBatchService {
     /**
      *
      * @param battchNo
+     * @param loginCode
+     * @param formId
+     * @param userIP
+     * @param userAgent
      * @return
      */
-    Result<List<VaccineBatchBean>> searchVaccineBatch(String battchNo);
+    Result<List<VaccineBatchBean>> searchVaccineBatch(String battchNo, String loginCode, String formId, String userIP, String userAgent);
 
     /**
      * 获取最后更新时间

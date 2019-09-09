@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Date;
+import java.util.HashMap;
 
 
 @Service
@@ -39,13 +41,19 @@ public class MiniProgramServiceImpl implements MiniProgramService {
     @Value("${my-data.wechat-mini.appsecret}")
     private String appsecret;
 
+    /**
+     * 已登录用户数据，String存储为loginCode
+     */
+    public static HashMap<String, WechatUserBean> userMap = new HashMap<>();
+
+
     /*** 小程序登录
      *
      * @param code
      * @return
      */
     @Override
-    public Result<String> oalogin(String code,String chan) {
+    public Result<String> oalogin(String code,String src) {
         String requestWCUrl = String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",appid,appsecret,code);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -66,18 +74,24 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                     }
                     wcResult = new JSONObject(strResult.toString());
                     //{"session_key":"EF5qJaPcIUj5yV5\/ascaig==","openid":"o6pfI5Q3R1ugslEcwexMpYDZ2WDg"
-                    WechatUserBean wechatUserBean = new WechatUserBean(wcResult.get("openid").toString(),code,wcResult.get("session_key").toString(),chan);
+                    WechatUserBean wechatUserBean = new WechatUserBean(wcResult.get("openid").toString(),code,wcResult.get("session_key").toString(), src,new Date());
                     LOG.info(String.format("微信登录请求结果：%s",wcResult));
-                    if(vaccineDao.getUserByOpenId(wechatUserBean.getOpenId()) == null) {
+                    WechatUserBean dbOldUser = vaccineDao.getUserByOpenId(wechatUserBean.getOpenId());
+                    if(dbOldUser == null) {
                         vaccineDao.addUser(wechatUserBean);
+                        userMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
                     }else {
+                        userMap.remove(dbOldUser.getLoginCode());
+
+                        userMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
                         vaccineDao.setUser(wechatUserBean);
                     }
                 }
             }
         }catch (Exception e){
-
+            LOG.error(e.toString());
+            new Result<>(false,e.toString());
         }
-        return null;
+        return new Result<>(true,"OK");
     }
 }

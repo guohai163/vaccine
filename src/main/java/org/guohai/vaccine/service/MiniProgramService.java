@@ -9,5 +9,5 @@ public interface MiniProgramService {
      * @param code
      * @return
      */
-    Result<String> oalogin(String code,String chan);
+    Result<String> oalogin(String code,String src);
 }

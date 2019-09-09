@@ -2,6 +2,7 @@ package org.guohai.vaccine.dao;
 
 
 import org.apache.ibatis.annotations.*;
+import org.guohai.vaccine.beans.VaccineAccessLog;
 import org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.beans.VaccineUrlBean;
 import org.guohai.vaccine.beans.WechatUserBean;
@@ -80,15 +81,39 @@ public interface VaccineDao {
     Boolean setLastDate(@Param("lastDate") Date lastDate);
 
 
-    @Insert("INSERT INTO vaccine_wechat_user_tb(open_id,login_code,session_key,chan)VALUES(#{user.openId},#{user.loginCode},#{user.sessionKey},#{user.chan})")
+    @Insert("INSERT INTO vaccine_wechat_user_tb(open_id,login_code,session_key,src,create_time)VALUES(#{user.openId},#{user.loginCode},#{user.sessionKey},#{user.src},#{user.createTime})")
     Boolean addUser(@Param("user")WechatUserBean user);
 
-    @Update("UPDATE vaccine_wechat_user_tb SET login_code=#{user.loginCode} WHERE open_id=#{user.openId}")
+    @Update("UPDATE vaccine_wechat_user_tb SET login_code=#{user.loginCode},session_key=#{user.sessionKey} WHERE open_id=#{user.openId}")
     Boolean setUser(@Param("user")WechatUserBean user);
 
-    @Select("SELECT open_id,login_code FROM vaccine_wechat_user_tb WHERE open_id=#{openId}")
+    @Select("SELECT * FROM vaccine_wechat_user_tb WHERE open_id=#{openId}")
     WechatUserBean getUserByOpenId(@Param("openId")String openId);
 
+    @Select("SELECT * FROM vaccine_wechat_user_tb WHERE login_code=#{loginCode}")
+    WechatUserBean getUserByLoginCode(@Param("loginCode")String loginCode);
 
+    @Insert("INSERT INTO `vaccine_access_log`\n" +
+            "(\n" +
+            "`open_id`,\n" +
+            "`user_agent`,\n" +
+            "`user_ip`,\n" +
+            "`service_category`,\n" +
+            "`query_param`,\n" +
+            "`access_fromid`,\n" +
+            "`query_result_num`,\n" +
+            "`access_date`)\n" +
+            "VALUES\n" +
+            "(\n" +
+            "#{log.openId},\n" +
+            "#{log.userAgent},\n" +
+            "#{log.userIp},\n" +
+            "#{log.serviceCategory},\n" +
+            "#{log.queryParam},\n" +
+            "#{log.accessFromid},\n" +
+            "#{log.queryResultNum},\n" +
+            "#{log.accessDate});\n" +
+            "\n")
+    Boolean addAccessLog(@Param("log")VaccineAccessLog log);
 
 }
