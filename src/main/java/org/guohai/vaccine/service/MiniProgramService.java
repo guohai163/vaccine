@@ -10,4 +10,6 @@ public interface MiniProgramService {
      * @return
      */
     Result<String> oalogin(String code,String src);
+
+    byte[] getWcaCode(String src);
 }

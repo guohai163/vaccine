@@ -4,9 +4,12 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import org.apache.http.util.EntityUtils;
 import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.beans.WechatUserBean;
 import org.guohai.vaccine.dao.VaccineDao;
@@ -14,12 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,8 +49,12 @@ public class MiniProgramServiceImpl implements MiniProgramService {
     /**
      * 已登录用户数据，String存储为loginCode
      */
-    public static HashMap<String, WechatUserBean> userMap = new HashMap<>();
+    public static HashMap<String, WechatUserBean> UserMap = new HashMap<>();
 
+
+    private static String AccessToken="";
+
+    private static Date ATExpTime = new Date() ;
 
     /*** 小程序登录
      *
@@ -79,11 +88,11 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                     WechatUserBean dbOldUser = vaccineDao.getUserByOpenId(wechatUserBean.getOpenId());
                     if(dbOldUser == null) {
                         vaccineDao.addUser(wechatUserBean);
-                        userMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
+                        UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
                     }else {
-                        userMap.remove(dbOldUser.getLoginCode());
+                        UserMap.remove(dbOldUser.getLoginCode());
 
-                        userMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
+                        UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
                         vaccineDao.setUser(wechatUserBean);
                     }
                 }
@@ -93,5 +102,72 @@ public class MiniProgramServiceImpl implements MiniProgramService {
             new Result<>(false,e.toString());
         }
         return new Result<>(true,"OK");
+    }
+
+    public byte[] getWcaCode(String src) {
+        if(AccessToken == null ||AccessToken.length()==0 || new Date().after(ATExpTime)){
+            getWCAccessToken();
+
+        }
+        String url = String.format("https://api.weixin.qq.com/wxa/getwxacode?access_token=%s",AccessToken);
+
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        String request = String.format("{\n" +
+                " \"path\":\"pages/index/index?src=%s\",\n" +
+                " \"width\":360\n" +
+                "}",src);
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setEntity(new StringEntity(request,"UTF-8"));
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httpPost);
+            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                HttpEntity httpEntity = response.getEntity();
+                return EntityUtils.toByteArray(httpEntity);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
+    private Boolean getWCAccessToken(){
+        String getUrl = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",appid,appsecret);
+        try {
+            JSONObject result = httpGet(getUrl);
+            AccessToken = result.getString("access_token");
+            ATExpTime = new Date(new Date().getTime()+result.getLong("expires_in")* 1000L);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    private JSONObject httpGet(String url) throws IOException, JSONException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(url);
+        CloseableHttpResponse response = null;
+        JSONObject wcResult = null;
+        response = httpClient.execute(httpGet);
+        if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            HttpEntity httpEntity = response.getEntity();
+            if(null!= httpEntity) {
+                BufferedReader buff = new BufferedReader(new InputStreamReader(httpEntity.getContent(),"UTF-8"),8*1024);
+                String line =null;
+                StringBuilder strResult = new StringBuilder();
+                while ((line = buff.readLine())!=null){
+                    strResult.append(line+"/n");
+                }
+                wcResult = new JSONObject(strResult.toString());
+
+                }
+        }
+        LOG.info(String.format("rquest url: %s, result is: %s",url,wcResult.toString()));
+        return wcResult;
     }
 }

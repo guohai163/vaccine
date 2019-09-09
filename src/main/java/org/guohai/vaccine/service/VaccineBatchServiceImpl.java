@@ -102,13 +102,13 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         String openId ="";
         //查用户openId
         if(loginCode!=null && loginCode.length()>1){
-            if(MiniProgramServiceImpl.userMap.get(loginCode)!=null){
-                openId = MiniProgramServiceImpl.userMap.get(loginCode).getOpenId();
+            if(MiniProgramServiceImpl.UserMap.get(loginCode)!=null){
+                openId = MiniProgramServiceImpl.UserMap.get(loginCode).getOpenId();
             }else {
                 WechatUserBean wechatUserBean = vaccineDao.getUserByLoginCode(loginCode);
                 if(wechatUserBean!=null){
                     openId = wechatUserBean.getOpenId();
-                    MiniProgramServiceImpl.userMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
+                    MiniProgramServiceImpl.UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
                 }
             }
         }
