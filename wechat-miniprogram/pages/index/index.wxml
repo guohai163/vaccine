@@ -4,12 +4,14 @@
     <image class="index-logo" src="/resources/images/logo.png"></image>
     <view class="index-desc">您可以输入疫苗的批次号，即可查询疫苗审批情况、厂商、过期时间等信息</view>
   </view>
+  <form bindsubmit="formSubmit" report-submit="true">
   <view class="appform">
     <view class="batchArea">
     批次号:<input class="input-search" bindinput="batchNoInput" maxlength="10" auto-focus placeholder="请输入疫苗批次号" />
     </view>
-    <button bindtap="search" class="vaccine-search" type="primary" plain="true">查询</button>
+    <button form-type="submit" class="vaccine-search" type="primary" plain="true">查询</button>
   </view>
+  </form>
 </view>
 <view class="weui-footer weui-footer_fixed-bottom">
 <official-account></official-account>

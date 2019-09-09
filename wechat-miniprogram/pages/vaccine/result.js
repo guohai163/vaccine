@@ -28,7 +28,10 @@ Page({
   onLoad: function (options) {
 
     wx.request({
-      url: app.globalData.serverUrl +'/search/' + options.query,
+      url: app.globalData.serverUrl +'/mini/search/' + options.query+'?formId='+options.formId,
+      header: {
+        'login-code': app.globalData.userCode
+      },
       success: res=>{
         console.log(res.data);
         if(res.data.status==false || res.data.data.length<1){
