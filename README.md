@@ -23,6 +23,7 @@
 ## 建表
 
 [create sql script](https://github.com/guohai163/vaccine/wiki/SQL)
+
 ===
 
 欢迎订阅公众号：海哥聊技术
