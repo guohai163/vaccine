@@ -5,14 +5,28 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    version: ''
+  },
+  copy: function() {
+    wx.setClipboardData({
+      data: 'https://github.com/guohai163/vaccine',
+      success() {
+        wx.showToast({
+          title: '源码地址复制成功',
+          icon: 'success',
+          duration: 2000
+        })
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      version: getApp().globalData.version
+    })
   },
 
   /**

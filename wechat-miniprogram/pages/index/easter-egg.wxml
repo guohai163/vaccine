@@ -1,2 +1,6 @@
-<!--pages/index/easter-egg.wxml-->
-<text>pages/index/easter-egg.wxml</text>
+<view class="container">
+  <image class="index-logo" src="/resources/images/logo.png"></image>
+  <view>版本：{{version}}</view>
+  <view>源码：github.com/guohai163/vaccine</view>
+  <view><button class="mini-btn" type="primary" size="mini" bindtap="copy">复制地址</button></view>
+</view>

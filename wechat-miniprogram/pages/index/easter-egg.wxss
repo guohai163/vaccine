@@ -1,1 +1,6 @@
 /* pages/index/easter-egg.wxss */
+
+.index-logo {
+  width: 120rpx;
+  height: 120rpx;
+}

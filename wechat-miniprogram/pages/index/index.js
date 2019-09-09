@@ -6,12 +6,18 @@ Page({
   data: {
     batchNo: '',
     lastDate: '',
-    src: ''
+    src: '',
+    clickCount: 0
   },
   easterEgg: function() {
-    wx.navigateTo({
-      url: '/pages/index/easter-egg',
-    })
+    this.setData({
+      clickCount: this.data.clickCount+1
+    });
+    if(this.data.clickCount>3){
+      wx.navigateTo({
+        url: '/pages/index/easter-egg',
+      })
+    }
   },
   //事件处理函数
   search: function() {
