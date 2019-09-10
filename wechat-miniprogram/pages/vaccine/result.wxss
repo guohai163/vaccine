@@ -46,3 +46,6 @@
   padding: 10rpx;
   padding-right: 20rpx;
 }
+.list-ad {
+  margin-top: 40rpx;
+}

@@ -11,7 +11,8 @@ Page({
   data: {
     vaccineData:null,
     showLoading:true,
-    showError: true
+    showError: true,
+    resultCount: 0
   },
 
   more:function(event) {
@@ -42,7 +43,8 @@ Page({
         }
         this.setData({
           vaccineData: res.data.data,
-          showLoading: false
+          showLoading: false,
+          resultCount: res.data.data.length
         });
       }
     })

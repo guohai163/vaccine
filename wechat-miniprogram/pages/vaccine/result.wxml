@@ -3,7 +3,8 @@
   <view class="result-warning {{showError?'no-display':''}}">没有搜索到任何该批号数据，请确认输入正确，比如数字0或字母O的混淆。如果确认输入正确依然无数据请至中国食品药品检定研究院官网进行二次查询。
   https://www.nifdc.org.cn
   </view>
-  <view class="vaccine-list" wx:for-index="idx" wx:for="{{vaccineData}}">
+  <view class="vaccine-list" wx:for="{{vaccineData}}" wx:key="idx" wx:for-index="idx">
+    
     <view class="{{idx%2==0?'odd':'even'}} result-item" id="{{idx}}" bindtap="more">
       <view class="weui-form-preview__bd" >
                 <view class="weui-form-preview__item">
@@ -25,7 +26,9 @@
         </view>
       <view class="vaccine-more" aira-role="button" aira-label="点击后可获得疫苗详细信息">详细 ></view>
     </view>
+    <view wx:if="{{idx==1}}" class="list-ad"><ad unit-id="adunit-c18de9e516a18d8d"></ad></view>
   </view>
+  
 </view>
 
 <mp-loading show="{{showLoading}}" type="circle"></mp-loading>
