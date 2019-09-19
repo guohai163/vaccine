@@ -11,6 +11,7 @@ import org.apache.http.impl.client.HttpClients;
 
 import org.apache.http.util.EntityUtils;
 import org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.beans.VaccineAccessLog;
 import org.guohai.vaccine.beans.WechatUserBean;
 import org.guohai.vaccine.dao.VaccineDao;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Service
@@ -132,6 +134,16 @@ public class MiniProgramServiceImpl implements MiniProgramService {
 
         return null;
 
+    }
+
+    /**
+     * 获取来访日志
+     *
+     * @return
+     */
+    @Override
+    public List<VaccineAccessLog> getAccessLogs() {
+        return vaccineDao.getAccessLog();
     }
 
     private Boolean getWCAccessToken(){

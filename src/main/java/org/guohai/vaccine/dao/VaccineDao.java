@@ -116,4 +116,6 @@ public interface VaccineDao {
             "\n")
     Boolean addAccessLog(@Param("log")VaccineAccessLog log);
 
+    @Select("select * from vaccine_access_log ORDER BY code DESC limit 100;")
+    List<VaccineAccessLog> getAccessLog();
 }

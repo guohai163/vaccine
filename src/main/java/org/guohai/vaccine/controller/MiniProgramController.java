@@ -38,15 +38,5 @@ public class MiniProgramController {
         return vaccineBatchService.searchVaccineBatch(vackey, loginCode, formId,userIp , userAgent);
     }
 
-    @RequestMapping(value = "/wxacode/{src}")
-    public ResponseEntity<byte[]> getWxaCode(@PathVariable("src") String src) {
-        if(src == null || src.length()==0){
-            return new ResponseEntity<byte[]>(HttpStatus.NO_CONTENT);
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        headers.setContentDispositionFormData(String.format("%s.jpeg",src),null);
-        return  new ResponseEntity<>(miniProgramService.getWcaCode(src),headers,HttpStatus.OK);
-    }
 
 }

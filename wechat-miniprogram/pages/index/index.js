@@ -20,21 +20,6 @@ Page({
     }
   },
   //事件处理函数
-  search: function() {
-    console.log(this.data.batchNo);
-    if (this.data.batchNo.length<4){
-      wx.showToast({
-        title: '请确认所输入批次号！',
-        icon: 'none',
-        duration: 2000
-      })
-    }else{
-
-      wx.navigateTo({
-        url: '/pages/vaccine/result?query='+this.data.batchNo
-      });
-    }
-  },
   formSubmit: function(e) {
     console.log(e.detail.formId);
     if (this.data.batchNo.length < 4) {
