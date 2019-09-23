@@ -2,6 +2,7 @@ package org.guohai.vaccine.service;
 
 import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.beans.VaccineAccessLog;
+import org.guohai.vaccine.beans.WechatUserBean;
 
 import java.util.List;
 
@@ -28,4 +29,10 @@ public interface MiniProgramService {
      * @return
      */
     List<VaccineAccessLog> getAccessLogs();
+
+    /**
+     * 获取用户列表
+     * @return
+     */
+    List<WechatUserBean> getUserList();
 }

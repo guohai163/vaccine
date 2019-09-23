@@ -118,4 +118,7 @@ public interface VaccineDao {
 
     @Select("select * from vaccine_access_log ORDER BY code DESC limit 100;")
     List<VaccineAccessLog> getAccessLog();
+
+    @Select("SELECT * FROM vaccine_wechat_user_tb order by create_time desc;")
+    List<WechatUserBean> getUserList();
 }

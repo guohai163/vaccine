@@ -40,4 +40,10 @@ public class AdminController {
         headers.setContentDispositionFormData(String.format("%s.jpeg",src),null);
         return  new ResponseEntity<>(miniProgramService.getWcaCode(src),headers,HttpStatus.OK);
     }
+
+    @RequestMapping("userlist")
+    public String getUserList(Model model) {
+        model.addAttribute("userlist",miniProgramService.getUserList());
+        return "userlist";
+    }
 }

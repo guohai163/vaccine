@@ -146,6 +146,16 @@ public class MiniProgramServiceImpl implements MiniProgramService {
         return vaccineDao.getAccessLog();
     }
 
+    /**
+     * 获取用户列表
+     *
+     * @return
+     */
+    @Override
+    public List<WechatUserBean> getUserList() {
+        return vaccineDao.getUserList();
+    }
+
     private Boolean getWCAccessToken(){
         String getUrl = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",appid,appsecret);
         try {

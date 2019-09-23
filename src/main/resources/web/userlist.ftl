@@ -7,17 +7,11 @@
 
 <div style="float: left;">
 <table  border="1" cellspacing="0">
-    <#list accesslogs as log>
+    <#list userlist as user>
         <tr>
-        <td>${log.code}</td>
-        <td>${log.openId}</td>
-        <td>${log.userAgent}</td>
-        <td><#if log.userIp?exists>${log.userIp}</#if></td>
-        <td>${log.serviceCategory}</td>
-        <td>${log.queryParam}</td>
-        <td><#if log.accessFromid?exists>${log.accessFromid}</#if></td>
-        <td>${log.queryResultNum}</td>
-        <td>${log.accessDate?string("yyyy.MM.dd HH:mm:ss")}</td>
+        <td>${user.openId}</td>
+        <td><#if user.src?exists>${user.src}</#if></td>
+        <td>${user.createTime?string("yyyy.MM.dd HH:mm:ss")}</td>
         </tr>
     </#list>
 </table>
