@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @Component
@@ -21,9 +22,15 @@ public class CheckDataDailyUtilities {
     @Autowired
     VaccineBatchService vaccineBatchService;
 
-    @Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 0 8 * * *")
     public void getNifdcData() {
         LOG.info("开始抓取数据，时间："+new Date());
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+
+        if(c.get(Calendar.MONTH)==0){
+            vaccineBatchService.nifdcVaccineData(String.valueOf(c.get(Calendar.YEAR)-1),"");
+        }
         vaccineBatchService.nifdcVaccineData(new SimpleDateFormat("yyyy").format( new Date()),"");
     }
 }
