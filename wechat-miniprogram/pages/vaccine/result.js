@@ -16,9 +16,9 @@ Page({
   },
 
   more:function(event) {
-
+    // console.log(JSON.stringify(this.data.vaccineData[event.currentTarget.id]).replace('&','%26'));
     wx.navigateTo({
-      url: '/pages/vaccine/resultmore?data=' + JSON.stringify(this.data.vaccineData[event.currentTarget.id]),
+      url: '/pages/vaccine/resultmore?data=' + JSON.stringify(this.data.vaccineData[event.currentTarget.id]).replace('&','%26'),
     })
 
 

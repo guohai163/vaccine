@@ -74,7 +74,7 @@ Page({
       })
     }
     wx.request({
-      url: app.globalData.serverUrl+'/getlast',
+      url: app.globalData.serverUrl+'/mini/getlast',
       success: res => {
         
         this.setData({

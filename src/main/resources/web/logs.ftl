@@ -12,7 +12,7 @@
         <td>${log.code}</td>
         <td>${log.openId}</td>
         <td>${log.userAgent}</td>
-        <td><#if log.userIp?exists>${log.userIp}</#if></td>
+        <td><#if log.userIp?exists><a href="https://www.ipip.net/ip/${log.userIp}.html" target="view_window">${log.userIp}</a></#if></td>
         <td>${log.serviceCategory}</td>
         <td>${log.queryParam}</td>
         <td><#if log.accessFromid?exists>${log.accessFromid}</#if></td>
