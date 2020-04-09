@@ -114,7 +114,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
         }
 
         if(openId.equals("")){
-            LOG.error("logincode:%s没有找到对应的openid",loginCode);
+            LOG.error(String.format("logincode:%s没有找到对应的openid",loginCode));
         }
         //TODO: 参数检查，长度4~10位
 
