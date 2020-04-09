@@ -55,6 +55,7 @@ public class MiniProgramController {
     @ResponseBody
     @RequestMapping(value = "/checkcode")
     public Result<String> checkLoginCode(@RequestHeader(value = "login-code",required = false)String loginCode){
+        LOG.info(String.format("checklogin in:%s",loginCode));
         return miniProgramService.checkLoginCode(loginCode);
     }
 
