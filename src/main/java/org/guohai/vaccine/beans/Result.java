@@ -13,6 +13,4 @@ public class Result<T> {
 
     private T data;
 
-    public Result(boolean b, T no_login_code) {
-    }
 }
