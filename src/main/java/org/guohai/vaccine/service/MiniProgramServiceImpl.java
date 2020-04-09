@@ -85,18 +85,26 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                     }
                     wcResult = new JSONObject(strResult.toString());
                     //{"session_key":"EF5qJaPcIUj5yV5\/ascaig==","openid":"o6pfI5Q3R1ugslEcwexMpYDZ2WDg"
-                    WechatUserBean wechatUserBean = new WechatUserBean(wcResult.get("openid").toString(),code,wcResult.get("session_key").toString(), src,new Date());
-                    LOG.info(String.format("微信登录请求结果：%s",wcResult));
-                    WechatUserBean dbOldUser = vaccineDao.getUserByOpenId(wechatUserBean.getOpenId());
-                    if(dbOldUser == null) {
-                        vaccineDao.addUser(wechatUserBean);
-                        UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
-                    }else {
-                        UserMap.remove(dbOldUser.getLoginCode());
+                    if(wcResult.get("errcode").toString().equals("0")){
+                        // 请求成功
+                        WechatUserBean wechatUserBean = new WechatUserBean(wcResult.get("openid").toString(),code,wcResult.get("session_key").toString(), src,new Date());
+                        LOG.info(String.format("微信登录请求结果：%s",wcResult));
+                        WechatUserBean dbOldUser = vaccineDao.getUserByOpenId(wechatUserBean.getOpenId());
+                        if(dbOldUser == null) {
+                            vaccineDao.addUser(wechatUserBean);
+                            UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
+                        }else {
+                            UserMap.remove(dbOldUser.getLoginCode());
 
-                        UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
-                        vaccineDao.setUser(wechatUserBean);
+                            UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
+                            vaccineDao.setUser(wechatUserBean);
+                        }
                     }
+                    else {
+                        // 请求失败
+                        return new Result<>(false,wcResult.get("errmsg").toString());
+                    }
+
                 }
             }
         }catch (Exception e){
