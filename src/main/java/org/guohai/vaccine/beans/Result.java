@@ -12,4 +12,7 @@ public class Result<T> {
     private Boolean status;
 
     private T data;
+
+    public Result(boolean b, T no_login_code) {
+    }
 }

@@ -164,6 +164,25 @@ public class MiniProgramServiceImpl implements MiniProgramService {
         return vaccineDao.getUserList();
     }
 
+    /**
+     * 检查loginCode是否有效
+     *
+     * @param loginCode
+     * @return
+     */
+    @Override
+    public Result<String> checkLoginCode(String loginCode) {
+        if(UserMap.get(loginCode) != null){
+            return new Result<>(true, "ok");
+        }
+        WechatUserBean wechatUserBean = vaccineDao.getUserByLoginCode(loginCode);
+        if(wechatUserBean!=null){
+            UserMap.put(loginCode,wechatUserBean);
+            return new Result<>(true, "ok");
+        }
+        return new Result<>(false, "no login code");
+    }
+
     private Boolean getWCAccessToken(){
         String getUrl = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",appid,appsecret);
         try {

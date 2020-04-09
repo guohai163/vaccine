@@ -35,4 +35,11 @@ public interface MiniProgramService {
      * @return
      */
     List<WechatUserBean> getUserList();
+
+    /**
+     * 检查loginCode是否有效
+     * @param loginCode
+     * @return
+     */
+    Result<String> checkLoginCode(String loginCode);
 }

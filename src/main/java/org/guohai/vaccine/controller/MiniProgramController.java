@@ -39,7 +39,6 @@ public class MiniProgramController {
                                                         @RequestHeader(value = "login-code",required = false)String loginCode,
                                                         @RequestHeader(value = "X-Real-IP",required = false) String userIp,
                                                         @RequestHeader(value = "User-Agent", required =  false) String userAgent) {
-        System.out.println(loginCode);
         vackey = vackey.replaceAll("%","");
         return vaccineBatchService.searchVaccineBatch(vackey, loginCode, formId,userIp , userAgent);
     }
@@ -50,6 +49,13 @@ public class MiniProgramController {
     public Result<String> getDataLast() {
         LOG.info("user in,ip:"+request.getRemoteAddr()+",UA:"+request.getHeader("User-Agent"));
         return vaccineBatchService.getLastDate();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/checkcode")
+    public Result<String> checkLoginCode(@RequestHeader(value = "login-code",required = false)String loginCode){
+        return miniProgramService.checkLoginCode(loginCode);
     }
 
 }
