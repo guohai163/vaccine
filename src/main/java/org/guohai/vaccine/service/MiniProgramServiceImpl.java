@@ -85,7 +85,7 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                     }
                     wcResult = new JSONObject(strResult.toString());
                     //{"session_key":"EF5qJaPcIUj5yV5\/ascaig==","openid":"o6pfI5Q3R1ugslEcwexMpYDZ2WDg"
-                    if(wcResult.get("errcode").toString().equals("0")){
+                    if(wcResult.optString("errcode").equals("")){
                         // 请求成功
                         WechatUserBean wechatUserBean = new WechatUserBean(wcResult.get("openid").toString(),code,wcResult.get("session_key").toString(), src,new Date());
                         LOG.info(String.format("微信登录请求结果：%s",wcResult));
