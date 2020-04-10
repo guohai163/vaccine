@@ -40,39 +40,71 @@ Page({
       batchNo: e.detail.value.replace(/\s+/g, '').replace(/%/g,'')
     });
   },
+  checkLoginCode: function(loginCode) {
+    let that = this;
+    wx.request({
+      url: app.globalData.serverUrl + '/mini/checkcode',
+      header: {
+        'login-code': loginCode
+      },
+      success(res) {
+        console.log(res.data);
+        if(res.data.status){
+          console.log('值合法，赋值给全局变量');
+          app.globalData.userCode = loginCode;
+        }
+        else{
+          console.log('登录值非法，重新登录');
+          that.login();
+        }
+      },
+      fail (res){
+        console.log('登录值非法，重新登录');
+        that.login();
+      }
+    })
+  },
+  login: function() {
+    wx.login({
+      success: res => {
+        app.globalData.userCode = res.code;
+        wx.request({
+          url: app.globalData.serverUrl + '/mini/oalogin?code=' + res.code + '&src=' + app.globalData.src,
+          success: data => {
+            console.log(data.data);
+            //持久化存储，这里我们把code当为临时用户编号，openid只存储在服务器里
+            wx.setStorage({
+              key: "userCode",
+              data: app.globalData.userCode
+
+            })
+          }
+        })
+      }
+    })
+  },
   onLoad: function (options) {
     console.log(options.src);
     if (typeof (options.src) !="undefined") {
       app.globalData.src = options.src;
     }
+    
     if(app.globalData.userCode == ''){
       console.log("全局变量中未取到数据");
+      let that = this;
       wx.getStorage({
         key: 'userCode',
         success: function (res) {
           console.log("从持久存储内加载成功"+res.data)
-          app.globalData.userCode = res.data;
+          that.checkLoginCode(res.data);
         },
-        fail: function (res) {
-          wx.login({
-            success: res => {
-              app.globalData.userCode = res.code;
-              wx.request({
-                url: app.globalData.serverUrl + '/mini/oalogin?code=' + res.code + '&src=' + app.globalData.src,
-                success: data => {
-                  //持久化存储，这里我们把code当为临时用户编号，openid只存储在服务器里
-                  wx.setStorage({
-                    key: "userCode",
-                    data: app.globalData.userCode
-
-                  })
-                }
-              })
-            }
-          })
+        fail(){
+          console.log('从持久化存储中获得登录值失败，准备调用登录方法');
+          that.login();
         }
       })
     }
+
     wx.request({
       url: app.globalData.serverUrl+'/mini/getlast',
       success: res => {
