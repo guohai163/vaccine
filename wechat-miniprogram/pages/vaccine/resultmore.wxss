@@ -9,3 +9,6 @@
 .container {
   padding: 20rpx;
 }
+.no-display {
+  display: none;
+}

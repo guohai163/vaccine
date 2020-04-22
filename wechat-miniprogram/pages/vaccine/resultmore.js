@@ -5,7 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    vaccineData:null
+    vaccineData:null,
+    downProgress:0,
+    downDisabled:false
   },
   copy: function(event) {
     wx.setClipboardData({
@@ -19,6 +21,40 @@ Page({
       }
     })
   },
+  downInstruction: function(event) {
+    this.setData({
+      downDisabled: true
+    })
+    let that = this;
+    console.log(event.target.dataset.url)
+    const downloadTask = wx.downloadFile({
+      // 示例 url，并非真实存在
+      url: event.target.dataset.url,
+      showMenu: true,
+      success: function (res) {
+        that.setData({
+          downDisabled: false
+        })
+        if (res.statusCode === 200) {
+          const filePath = res.tempFilePath
+          wx.openDocument({
+            filePath: filePath,
+            success: function (res) {
+              console.log('打开文档成功')
+            }
+          })
+        }
+      }
+    })
+    downloadTask.onProgressUpdate((res) => {
+      console.log('下载进度', res.progress)
+      console.log('已经下载的数据长度', res.totalBytesWritten)
+      console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
+      this.setData({
+        downProgress: res.progress
+      })
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -27,6 +63,21 @@ Page({
     this.setData({
       vaccineData: JSON.parse(options.data.replace('%26','&'))
     });
+    console.log(this.data.vaccineData.productName)
+    let instructionUrl = ''
+    switch(this.data.vaccineData.productName){
+      case '九价人乳头瘤病毒疫苗（酿酒酵母）':
+        instructionUrl = 'http://10.12.54.1/doc/jdx9syringesms_semi_200310.pdf'
+        break;
+      default:
+        instructionUrl = ''
+        break;
+    }
+    console.log(instructionUrl)
+    this.setData({
+      instructionUrl: instructionUrl
+    })
+    
   },
 
   /**

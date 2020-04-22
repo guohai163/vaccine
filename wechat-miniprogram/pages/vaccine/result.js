@@ -34,7 +34,6 @@ Page({
         'login-code': app.globalData.userCode
       },
       success: res=>{
-        console.log(res.data);
         if(res.data.status==false || res.data.data.length<1){
           this.setData({
             showLoading: false,
