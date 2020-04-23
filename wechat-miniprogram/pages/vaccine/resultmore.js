@@ -1,4 +1,7 @@
 // pages/vaccine/resultmore.js
+//获取应用实例
+const app = getApp()
+
 Page({
 
   /**
@@ -59,21 +62,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // console.log(options.data);
+    let vaccine_result = decodeURIComponent(options.data);
+    console.log(vaccine_result);
     this.setData({
-      vaccineData: JSON.parse(options.data.replace('%26','&'))
+      vaccineData: JSON.parse(vaccine_result.replace('%26','&'))
     });
-    console.log(this.data.vaccineData.productName)
+    
     let instructionUrl = ''
     switch(this.data.vaccineData.productName){
       case '九价人乳头瘤病毒疫苗（酿酒酵母）':
-        instructionUrl = 'http://10.12.54.1/doc/jdx9syringesms_semi_200310.pdf'
+        instructionUrl = app.globalData.downloadUrl + '/ab04d0128a09d128d5f6345569297d61.pdf'
         break;
       default:
         instructionUrl = ''
         break;
     }
-    console.log(instructionUrl)
+
     this.setData({
       instructionUrl: instructionUrl
     })

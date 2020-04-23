@@ -60,7 +60,7 @@
                   </view>
                   <view class="weui-form-preview__item {{instructionUrl.length>0?'':'no-display'}}">
                     <view class="weui-form-preview__label">下载说明书</view>
-                    <view class="weui-form-preview__value"><button class="mini-btn" type="primary" size="mini" data-url="{{instructionUrl}}" bindtap="downInstruction" disabled="{{downDisabled}}">Down</button></view>
+                    <view class="weui-form-preview__value"><button class="mini-btn" type="primary" size="mini" data-url="{{instructionUrl}}" bindtap="downInstruction" disabled="{{downDisabled}}" id="downDcoument">Down</button></view>
                   </view>
                   <view class="weui-form-preview__item {{downProgress>0?'':'no-display'}}">
                     <progress percent="{{downProgress}}" show-info />
