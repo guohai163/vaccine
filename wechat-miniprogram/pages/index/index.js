@@ -1,19 +1,19 @@
 //index.js
 //获取应用实例
 const app = getApp()
+let clickCount = 0
 
 Page({
   data: {
     batchNo: '',
     lastDate: '',
-    src: '',
-    clickCount: 0
+    src: ''
   },
   easterEgg: function() {
-    this.setData({
-      clickCount: this.data.clickCount+1
-    });
-    if(this.data.clickCount>3){
+    clickCount ++;
+
+
+    if(clickCount>3){
       wx.navigateTo({
         url: '/pages/index/easter-egg',
       })

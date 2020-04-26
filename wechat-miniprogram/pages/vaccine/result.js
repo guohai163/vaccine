@@ -42,8 +42,7 @@ Page({
         }
         this.setData({
           vaccineData: res.data.data,
-          showLoading: false,
-          resultCount: res.data.data.length
+          showLoading: false
         });
       }
     })

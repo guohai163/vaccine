@@ -31,3 +31,8 @@
   border-bottom: 1rpx solid #888888;
   display: flex;
 }
+
+.easter_egg {
+  height: 30rpx;
+  font-size: 14px;
+}

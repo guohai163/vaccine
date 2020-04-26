@@ -15,5 +15,5 @@
 </view>
 <view class="weui-footer weui-footer_fixed-bottom">
 <official-account></official-account>
-<view class="weui-footer__text" bindtap="easterEgg">数据最后更新时间:{{lastDate}}</view>
+<view class="weui-footer__text easter_egg" bindtap="easterEgg">数据最后更新时间:{{lastDate}}</view>
 </view>

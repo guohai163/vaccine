@@ -1,6 +1,7 @@
 // pages/vaccine/resultmore.js
 //获取应用实例
 const app = getApp()
+let down_percentage = 0
 
 Page({
 
@@ -10,7 +11,8 @@ Page({
   data: {
     vaccineData:null,
     downProgress:0,
-    downDisabled:false
+    downDisabled:false,
+    loginCode: ''
   },
   copy: function(event) {
     wx.setClipboardData({
@@ -31,12 +33,13 @@ Page({
     let that = this;
     console.log(event.target.dataset.url)
     const downloadTask = wx.downloadFile({
-      // 示例 url，并非真实存在
       url: event.target.dataset.url,
       showMenu: true,
       success: function (res) {
+
         that.setData({
-          downDisabled: false
+          downDisabled: false,
+          downProgress: 100
         })
         if (res.statusCode === 200) {
           const filePath = res.tempFilePath
@@ -50,12 +53,14 @@ Page({
       }
     })
     downloadTask.onProgressUpdate((res) => {
-      console.log('下载进度', res.progress)
-      console.log('已经下载的数据长度', res.totalBytesWritten)
-      console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
-      this.setData({
-        downProgress: res.progress
-      })
+
+      if(down_percentage+5<res.progress) {
+        down_percentage = res.progress
+        this.setData({
+          downProgress: res.progress
+        })
+      }
+      
     })
   },
   /**
@@ -73,13 +78,22 @@ Page({
       case '九价人乳头瘤病毒疫苗（酿酒酵母）':
         instructionUrl = app.globalData.downloadUrl + '/ab04d0128a09d128d5f6345569297d61.pdf'
         break;
+      case '吸附无细胞百白破灭活脊髓灰质炎和b型流感嗜血杆菌（结合）联合疫苗':
+        instructionUrl = app.globalData.downloadUrl + '/2d7931a1e41ecaa061ce42d080752dae.pdf'
+        break;
+      case '13价肺炎球菌多糖结合疫苗':
+        if(this.data.vaccineData.manufacturer == 'Pfizer Ireland Pharmaceuticals') {
+          instructionUrl = app.globalData.downloadUrl + '/b99fecd5b7ef6357b59a2f15666f137f.pdf'
+        }
+        break;
       default:
         instructionUrl = ''
         break;
     }
 
     this.setData({
-      instructionUrl: instructionUrl
+      instructionUrl: instructionUrl,
+      loginCode: app.globalData.userCode
     })
     
   },
