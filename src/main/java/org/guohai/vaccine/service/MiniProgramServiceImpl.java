@@ -13,6 +13,7 @@ import org.apache.http.util.EntityUtils;
 import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.beans.VaccineAccessLog;
 import org.guohai.vaccine.beans.WechatUserBean;
+import org.guohai.vaccine.beans.WechatUserInfoBean;
 import org.guohai.vaccine.dao.VaccineDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -181,6 +182,16 @@ public class MiniProgramServiceImpl implements MiniProgramService {
             return new Result<>(true, "ok");
         }
         return new Result<>(false, "no login code");
+    }
+
+    /**
+     * @param userInfo
+     * @return
+     */
+    @Override
+    public Result<String> putUserMoreInfo(WechatUserInfoBean userInfo) {
+        vaccineDao.getUserByLoginCode(userInfo.getLoginCode());
+        return null;
     }
 
     private Boolean getWCAccessToken(){

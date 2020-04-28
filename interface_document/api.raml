@@ -1,0 +1,94 @@
+#%RAML 1.0
+title: vaccine api document
+version: v1
+# baseUri: https://api.vaccine.pub
+baseUri: http://127.0.0.1:8000
+
+
+/mini:
+  /checkcode:
+    displayName: 检查登录loginCode是否有效
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"status":true,"data":"ok"}
+      headers:
+        login-code:
+          type: string
+          example:
+            login-code: 001uyal32HKFYQ0MLFl32iHSk32uyald
+  /getlast:
+    displayName: getdata
+    get:
+      description: get last update time
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                status:
+                  statue: true
+  /search/{vackey}:
+    displayName: 搜索指定批次
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"status":true,"data":[]}
+    uriParameters:
+      vackey:
+        type: string
+        example: 2020
+  /oalogin:
+    displayName: 小程序的登录
+    get:
+      queryParameters:
+        code:
+          type: string
+          displayName: 用户标识
+        src:
+          type: string
+          displayName: 用户来源
+          example:
+            zhihu
+/login:
+  post:
+    queryParameters:
+      username:
+        type: string
+        example: user
+      password:
+        type: string
+      _csrf:
+        type: string
+  get:
+
+/admin:
+  /log:
+    get:
+      responses:
+        200:
+          text/html:
+            example: aaa
+  /userlist:
+    get:
+      responses:
+        200:
+  /userinfo:
+    put:
+      body:
+        application/json:
+          example: |
+            {
+              "loginCode": "",
+              "gender": "女",
+              "city": "北京"
+            }
+      queryParameters:
+        _csrf:
+          type: string
