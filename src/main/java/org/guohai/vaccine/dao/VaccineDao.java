@@ -2,10 +2,7 @@ package org.guohai.vaccine.dao;
 
 
 import org.apache.ibatis.annotations.*;
-import org.guohai.vaccine.beans.VaccineAccessLog;
-import org.guohai.vaccine.beans.VaccineBatchBean;
-import org.guohai.vaccine.beans.VaccineUrlBean;
-import org.guohai.vaccine.beans.WechatUserBean;
+import org.guohai.vaccine.beans.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -112,8 +109,7 @@ public interface VaccineDao {
             "#{log.queryParam},\n" +
             "#{log.accessFromid},\n" +
             "#{log.queryResultNum},\n" +
-            "#{log.accessDate});\n" +
-            "\n")
+            "#{log.accessDate});\n" )
     Boolean addAccessLog(@Param("log")VaccineAccessLog log);
 
     @Select("select * from vaccine_access_log ORDER BY code DESC limit 100;")
@@ -121,4 +117,16 @@ public interface VaccineDao {
 
     @Select("SELECT * FROM vaccine_wechat_user_tb order by create_time desc;")
     List<WechatUserBean> getUserList();
+
+    @Insert("INSERT INTO `vaccine_wechat_user_data_tb`\n" +
+            "(`open_id`,\n" +
+            "`gender`,\n" +
+            "`city`)\n" +
+            "VALUES\n" +
+            "(#{user.openId},\n" +
+            "#{user.gender},\n" +
+            "#{user.city});")
+    Boolean addUserData(@Param("user")WechatUserInfoBean userInfo);
+
+
 }

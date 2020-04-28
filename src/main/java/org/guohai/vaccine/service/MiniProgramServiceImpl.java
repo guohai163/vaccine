@@ -190,8 +190,20 @@ public class MiniProgramServiceImpl implements MiniProgramService {
      */
     @Override
     public Result<String> putUserMoreInfo(WechatUserInfoBean userInfo) {
-        vaccineDao.getUserByLoginCode(userInfo.getLoginCode());
-        return null;
+        WechatUserBean userbean = vaccineDao.getUserByLoginCode(userInfo.getLoginCode());
+        if(userbean != null){
+            userInfo.setOpenId(userbean.getOpenId());
+            try {
+                vaccineDao.addUserData(userInfo);
+            }
+            catch (Exception ex){
+                LOG.error(ex.toString());
+                return new Result<>(false,ex.toString());
+            }
+
+        }
+
+        return new Result<>(true,"success");
     }
 
     private Boolean getWCAccessToken(){

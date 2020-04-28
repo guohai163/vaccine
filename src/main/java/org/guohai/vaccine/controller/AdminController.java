@@ -50,7 +50,7 @@ public class AdminController {
     @ResponseBody
     @RequestMapping(value = "/userinfo", method = RequestMethod.PUT)
     public Result<String> putUserMoreInfo(@RequestBody WechatUserInfoBean userInfo) {
-        miniProgramService.putUserMoreInfo(userInfo);
-        return new Result<>();
+
+        return miniProgramService.putUserMoreInfo(userInfo);
     }
 }
