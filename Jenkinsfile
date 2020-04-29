@@ -18,7 +18,11 @@ pipeline {
 
       }
     }
-
+    stage ('Archive') {
+      steps {
+        archiveArtifacts artifacts: '**/target/*.jar',fingerprint: true
+      }
+    }
     stage ('deploy') {
         steps {
             sh "md5sum ${WORKSPACE}/target/*.jar"
