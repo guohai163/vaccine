@@ -3,6 +3,7 @@ package org.guohai.vaccine.service;
 import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.beans.VaccineAccessLog;
 import org.guohai.vaccine.beans.WechatUserBean;
+import org.guohai.vaccine.beans.WechatUserInfoBean;
 
 import java.util.List;
 
@@ -42,4 +43,11 @@ public interface MiniProgramService {
      * @return
      */
     Result<String> checkLoginCode(String loginCode);
+
+    /**
+     *
+     * @param userInfo
+     * @return
+     */
+    Result<String> putUserMoreInfo(WechatUserInfoBean userInfo);
 }
