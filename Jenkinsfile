@@ -1,8 +1,8 @@
 pipeline {
   agent any
   environment {
-    TAG_SERVER = 'guohai@guohai.org'
-    TAG_PATH = '/data/vaccine.guohai.org'
+//     TAG_SERVER = 'guohai@guohai.org'
+//     TAG_PATH = '/data/vaccine.guohai.org'
     //目标服务器启动停止springboot脚本路径
     TAG_SCRIPT = '/data/spring-boot.sh'
   }
