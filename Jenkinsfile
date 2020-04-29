@@ -22,7 +22,7 @@ pipeline {
     stage ('deploy') {
         steps {
             sh "md5sum ${WORKSPACE}/target/*.jar"
-            withCredentials([sshUserPrivateKey(credentialsId: '${SERVER_ID}', keyFileVariable: '${SERVER_KEY}', passphraseVariable: '', usernameVariable: '')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: "${SERVER_ID}", keyFileVariable: "${SERVER_KEY}", passphraseVariable: '', usernameVariable: '')]) {
                 sh "scp -i ${guohai_org_key} ${WORKSPACE}/target/*.jar ${TAG_SERVER}:${TAG_PATH}/${JOB_BASE_NAME}.jar"
                 sh "ssh -i ${guohai_org_key} ${TAG_SERVER} md5sum ${TAG_PATH}/${JOB_BASE_NAME}.jar"
                 sh "ssh -i ${guohai_org_key} ${TAG_SERVER} ${TAG_SCRIPT} restart ${TAG_PATH}/${JOB_BASE_NAME}.jar --spring.config.location=${TAG_PATH}/application.yml"
