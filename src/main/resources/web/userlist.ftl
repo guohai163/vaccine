@@ -7,9 +7,16 @@
 
 <div style="float: left;">
 <table  border="1" cellspacing="0">
+        <tr>
+        <td>openId</td>
+        <td>loginCode</td>
+        <td>src</td>
+        <td>createTime</td>
+        </tr>
     <#list userlist as user>
         <tr>
         <td>${user.openId}</td>
+        <td>${user.loginCode}</td>
         <td><#if user.src?exists>${user.src}</#if></td>
         <td>${user.createTime?string("yyyy.MM.dd HH:mm:ss")}</td>
         </tr>
