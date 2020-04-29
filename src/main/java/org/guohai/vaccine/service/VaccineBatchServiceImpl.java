@@ -120,9 +120,13 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
 
 //        battchNo = "%"+battchNo+"%";
         List<VaccineBatchBean> list = vaccineDao.searchVaccine(String.format("%%%s%%",battchNo));
-        //写日志
-        VaccineAccessLog accessLog = new VaccineAccessLog(0,openId,userAgent,userIP,"search",battchNo,formId,list.size(),new Date());
-        vaccineDao.addAccessLog(accessLog);
+        // 当loginCode为空时判定认为是测试非小程序请求不记录日志
+        if (loginCode != null){
+            //写日志
+            VaccineAccessLog accessLog = new VaccineAccessLog(0,openId,userAgent,userIP,"search",battchNo,formId,list.size(),new Date());
+            vaccineDao.addAccessLog(accessLog);
+        }
+
         return new Result<>(true,list);
     }
 
