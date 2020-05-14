@@ -8,10 +8,15 @@ App({
     downloadUrl: "https://static.vaccine.pub",
     userCode: '',
     src: '',
-    version: '0.8.1'
+    version: '0.8.5',
+    shareTicket: undefined
   },
-  onLaunch: function () {
+  onLaunch: function (options) {
+    console.log("onLauch:"+options.shareTicket)
 
-
+  },
+  onShow: function(options){
+    // this.globalData.shareTicket = options.shareTicket
+    
   }
 })

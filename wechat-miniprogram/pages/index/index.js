@@ -84,7 +84,7 @@ Page({
     })
   },
   onLoad: function (options) {
-    console.log(options.src);
+    console.log("来源：" + options.src);
     if (typeof (options.src) !="undefined") {
       app.globalData.src = options.src;
     }
@@ -104,16 +104,55 @@ Page({
         }
       })
     }
+    // wx.showShareMenu({
+    //   withShareTicket: true
+    // })
 
-    wx.request({
-      url: app.globalData.serverUrl+'/mini/getlast',
-      success: res => {
-        
-        this.setData({
-          lastDate: res.data.data
-        });
-        app.globalData.lastDate = res.data.data;
-      }
-    })
+    if (typeof (app.globalData.shareTicket) !="undefined") {
+      console.log('app.globalData.shareTicket:'+app.globalData.shareTicket)
+      wx.getShareInfo({
+        shareTicket: app.globalData.shareTicket,
+        success: res => {
+          if (res.errMsg == 'getShareInfo:ok') {
+            let shareTicket = '?data='+ res.encryptedData + '&iv=' + res.iv
+            console.log(shareTicket)
+            wx.request({
+              url: app.globalData.serverUrl+'/mini/getlast' + shareTicket,
+              success: res => {
+                
+                this.setData({
+                  lastDate: res.data.data
+                });
+                app.globalData.lastDate = res.data.data;
+              }
+            })
+          }
+        }
+      })
+    }
+    else {
+      wx.request({
+        url: app.globalData.serverUrl+'/mini/getlast',
+        success: res => {
+          
+          this.setData({
+            lastDate: res.data.data
+          });
+          app.globalData.lastDate = res.data.data;
+        }
+      })
+    }
+
+    
+  },
+    /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    return {
+      title: '疫苗批号验证',
+      path: '/pages/index/index?src=share',
+      imageUrl: '/resources/images/400x340.jpg'
+    }
   }
 })
