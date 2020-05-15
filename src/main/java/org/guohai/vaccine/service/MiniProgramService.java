@@ -14,7 +14,7 @@ public interface MiniProgramService {
      * @param code
      * @return
      */
-    Result<String> oalogin(String code,String src);
+    Result<String> oalogin(String code,String src, String sharedData, String iv);
 
     /**
      *

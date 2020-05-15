@@ -64,12 +64,12 @@ Page({
       }
     })
   },
-  login: function() {
+  login: function(shareTicket) {
     wx.login({
       success: res => {
         app.globalData.userCode = res.code;
         wx.request({
-          url: app.globalData.serverUrl + '/mini/oalogin?code=' + res.code + '&src=' + app.globalData.src,
+          url: app.globalData.serverUrl + '/mini/oalogin?code=' + res.code + '&src=' + app.globalData.src + shareTicket,
           success: data => {
             console.log(data.data);
             //持久化存储，这里我们把code当为临时用户编号，openid只存储在服务器里
@@ -78,6 +78,7 @@ Page({
               data: app.globalData.userCode
 
             })
+
           }
         })
       }
@@ -99,50 +100,40 @@ Page({
           that.checkLoginCode(res.data);
         },
         fail(){
-          console.log('从持久化存储中获得登录值失败，准备调用登录方法');
-          that.login();
-        }
-      })
-    }
-    // wx.showShareMenu({
-    //   withShareTicket: true
-    // })
-
-    if (typeof (app.globalData.shareTicket) !="undefined") {
-      console.log('app.globalData.shareTicket:'+app.globalData.shareTicket)
-      wx.getShareInfo({
-        shareTicket: app.globalData.shareTicket,
-        success: res => {
-          if (res.errMsg == 'getShareInfo:ok') {
-            let shareTicket = '?data='+ res.encryptedData + '&iv=' + res.iv
-            console.log(shareTicket)
-            wx.request({
-              url: app.globalData.serverUrl+'/mini/getlast' + shareTicket,
+          console.log('从持久化存储中获得登录值失败,可能是首次登录，准备调用登录方法');
+          // TODO:首次使用如果有分享来源进行记录
+          if (typeof (app.globalData.shareTicket) !="undefined") {
+            wx.getShareInfo({
+              shareTicket: app.globalData.shareTicket,
               success: res => {
-                
-                this.setData({
-                  lastDate: res.data.data
-                });
-                app.globalData.lastDate = res.data.data;
+                if (res.errMsg == 'getShareInfo:ok') {
+                  let shareTicket = '&share_data='+ encodeURIComponent(res.encryptedData) + '&iv=' + encodeURIComponent(res.iv)
+                  console.log(shareTicket)
+                  that.login(shareTicket);
+                }
               }
             })
+          }
+          else {
+            that.login();
           }
         }
       })
     }
-    else {
-      wx.request({
-        url: app.globalData.serverUrl+'/mini/getlast',
-        success: res => {
-          
-          this.setData({
-            lastDate: res.data.data
-          });
-          app.globalData.lastDate = res.data.data;
-        }
-      })
-    }
+    // 打开分享回调时票据功能
+    wx.showShareMenu({
+      withShareTicket: true
+    })
 
+    wx.request({
+       url: app.globalData.serverUrl+'/mini/getlast',
+       success: res => {      
+         this.setData({
+           lastDate: res.data.data
+         });
+         app.globalData.lastDate = res.data.data;
+       }
+    })
     
   },
     /**

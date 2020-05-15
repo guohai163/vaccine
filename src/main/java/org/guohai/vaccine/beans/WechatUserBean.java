@@ -18,4 +18,6 @@ public class WechatUserBean {
     private String src;
 
     private Date createTime;
+
+    private String sharedData;
 }

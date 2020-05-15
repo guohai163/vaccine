@@ -15,6 +15,7 @@ import org.guohai.vaccine.beans.VaccineAccessLog;
 import org.guohai.vaccine.beans.WechatUserBean;
 import org.guohai.vaccine.beans.WechatUserInfoBean;
 import org.guohai.vaccine.dao.VaccineDao;
+import org.guohai.vaccine.utilities.WxCryptUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +71,7 @@ public class MiniProgramServiceImpl implements MiniProgramService {
      * @return
      */
     @Override
-    public Result<String> oalogin(String code,String src) {
+    public Result<String> oalogin(String code,String src, String sharedData, String iv) {
         String requestWCUrl = String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",appid,appsecret,code);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -88,8 +94,16 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                     //{"session_key":"EF5qJaPcIUj5yV5\/ascaig==","openid":"o6pfI5Q3R1ugslEcwexMpYDZ2WDg"
                     if(wcResult.optString("errcode").equals("")){
                         // 请求成功
-                        WechatUserBean wechatUserBean = new WechatUserBean(wcResult.get("openid").toString(),code,wcResult.get("session_key").toString(), src,new Date());
+                        WechatUserBean wechatUserBean = new WechatUserBean(wcResult.get("openid").toString(),code,wcResult.get("session_key").toString(), src,new Date(), "");
                         LOG.info(String.format("微信登录请求结果：%s",wcResult));
+                        if(!sharedData.isEmpty()) {
+                            // 解密分享的内容
+                            String shared = WxCryptUtils.decrypt(sharedData, iv, wechatUserBean.getSessionKey());
+                            LOG.info("分享数据信息：%s", shared);
+                            wechatUserBean.setSharedData(shared);
+                        }
+
+
                         WechatUserBean dbOldUser = vaccineDao.getUserByOpenId(wechatUserBean.getOpenId());
                         if(dbOldUser == null) {
                             vaccineDao.addUser(wechatUserBean);
@@ -242,4 +256,5 @@ public class MiniProgramServiceImpl implements MiniProgramService {
         LOG.info(String.format("rquest url: %s, result is: %s",url,wcResult.toString()));
         return wcResult;
     }
+
 }

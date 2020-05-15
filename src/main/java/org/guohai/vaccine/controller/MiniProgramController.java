@@ -28,8 +28,9 @@ public class MiniProgramController {
     private HttpServletRequest request;
 
     @RequestMapping(value = "/oalogin")
-    public Result<String> oalogin(@ModelAttribute("code") String code,@ModelAttribute("src") String src) {
-        return miniProgramService.oalogin(code,src);
+    public Result<String> oalogin(@ModelAttribute("code") String code, @ModelAttribute("src") String src,
+                                  @ModelAttribute("share_data") String shareData, @ModelAttribute("iv") String iv) {
+        return miniProgramService.oalogin(code, src, shareData, iv);
     }
 
     @ResponseBody

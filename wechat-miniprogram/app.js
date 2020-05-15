@@ -3,7 +3,7 @@ App({
 
   globalData: {
     lastDate: null,
-    // serverUrl: "https://vaccine.zhongdaiqi.com",
+    // serverUrl: "http://localhost:8000",
     serverUrl: "https://api.vaccine.pub",
     downloadUrl: "https://static.vaccine.pub",
     userCode: '',
@@ -12,7 +12,7 @@ App({
     shareTicket: undefined
   },
   onLaunch: function (options) {
-    console.log("onLauch:"+options.shareTicket)
+    this.globalData.shareTicket = options.shareTicket
 
   },
   onShow: function(options){
