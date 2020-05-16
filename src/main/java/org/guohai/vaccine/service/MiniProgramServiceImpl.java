@@ -99,7 +99,7 @@ public class MiniProgramServiceImpl implements MiniProgramService {
                         if(!sharedData.isEmpty()) {
                             // 解密分享的内容
                             String shared = WxCryptUtils.decrypt(sharedData, iv, wechatUserBean.getSessionKey());
-                            LOG.info("分享数据信息：%s", shared);
+                            LOG.info(String.format("分享数据信息：%s", shared));
                             wechatUserBean.setSharedData(shared);
                         }
 
