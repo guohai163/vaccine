@@ -3,7 +3,7 @@ App({
 
   globalData: {
     lastDate: null,
-    // serverUrl: "http://localhost:8000",
+    // serverUrl: "https://vaccine.zhongdaiqi.com",
     serverUrl: "https://api.vaccine.pub",
     downloadUrl: "https://static.vaccine.pub",
     userCode: '',

@@ -1,5 +1,6 @@
 <!--pages/vaccine/resultmore.wxml-->
 <view class="container">
+<ad unit-id="adunit-c18de9e516a18d8d"></ad>
 <view class="weui-form-preview__bd" >
                   <view class="weui-form-preview__item">
                       <view class="weui-form-preview__label">品种名称</view>
@@ -69,5 +70,9 @@
                   {{loginCode}}
                   </view>
   </view>
+
+
 </view>
+
+
 
