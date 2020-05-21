@@ -26,7 +26,7 @@
         </view>
       <view class="vaccine-more" aira-role="button" aira-label="点击后可获得疫苗详细信息">详细 ></view>
     </view>
-    <view wx:if="{{idx==0}}" class="list-ad"><ad unit-id="adunit-c18de9e516a18d8d"></ad></view>
+    <!-- <view wx:if="{{idx==0}}" class="list-ad"><ad unit-id="adunit-c18de9e516a18d8d"></ad></view> -->
   </view>
   
 </view>

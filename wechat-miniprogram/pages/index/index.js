@@ -11,8 +11,6 @@ Page({
   },
   easterEgg: function() {
     clickCount ++;
-
-
     if(clickCount>3){
       wx.navigateTo({
         url: '/pages/index/easter-egg',
@@ -35,6 +33,7 @@ Page({
       });
     }
   },
+  
   batchNoInput: function(e) {
     this.setData({
       batchNo: e.detail.value.replace(/\s+/g, '').replace(/%/g,'')
