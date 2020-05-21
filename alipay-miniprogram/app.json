@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/vaccine/result",
+    "pages/vaccine/resultmore"
+  ],
+  "window": {
+    "defaultTitle": "疫苗批号验证"
+  }
+}

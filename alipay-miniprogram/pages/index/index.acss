@@ -1,0 +1,58 @@
+.miniappinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.appform {
+  margin-top: 50px;
+  align-items: center;
+}
+
+.index-logo {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.index-desc {
+  margin-top: 20rpx;
+  color: #888888;
+  font-size: 28rpx;
+}
+
+.vaccine-search {
+  margin-top: 40rpx;
+}
+
+
+.easter_egg {
+  height: 30rpx;
+  font-size: 14px;
+}
+
+.search-input {
+  flex:1;
+  text-align: left;
+  display: block;
+  color: #000;
+  height: 24px;
+  font-size: 15px;
+  background-color: #fff;
+  border-color: transparent;
+}
+.search-input:focus + .search-cancel {
+  margin-right:0;
+  opacity: 1;
+}
+
+.search-outer {
+  box-sizing: border-box;
+  display:flex;
+  height:40px;
+  overflow:hidden;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  background-color: #efeff4;
+}
+.search-outer * {
+  box-sizing: border-box;
+}

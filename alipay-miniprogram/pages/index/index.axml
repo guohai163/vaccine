@@ -1,0 +1,21 @@
+
+<view class="container">
+  <view class="miniappinfo">
+    <image class="index-logo" src="/resources/images/logo.png"></image>
+    <view class="index-desc">您可以输入疫苗的批次号，即可查询疫苗审批情况、厂商、过期时间等信息</view>
+  </view>
+  <form onSubmit="formSubmit" report-submit="true">
+  <view class="appform">
+    <view class="batchArea">
+    
+    <view class="search-outer">
+      <input class="search-input" bindinput="batchNoInput" name="batchno" maxlength="20" auto-focus placeholder="请输入疫苗批次号" />
+    </view>
+    </view>
+    <button formType="submit" class="vaccine-search" type="primary" plain="true" size="mini">查询</button>
+  </view>
+  </form>
+</view>
+<view class="weui-footer weui-footer_fixed-bottom">
+<view class="weui-footer__text easter_egg" bindtap="easterEgg">数据最后更新时间:{{lastDate}}</view>
+</view>

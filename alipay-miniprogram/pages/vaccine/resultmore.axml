@@ -1,0 +1,68 @@
+<view class="container">
+<view class="weui-form-preview__bd" >
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">品种名称</view>
+                      <view class="weui-form-preview__value">{{vaccineData.productName}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">规格</view>
+                      <view class="weui-form-preview__value">{{vaccineData.norm}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">批次号</view>
+                      <view class="weui-form-preview__value">{{vaccineData.batchNo}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">签发量</view>
+                      <view class="weui-form-preview__value">{{vaccineData.batchNum}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">有效期</view>
+                      <view class="weui-form-preview__value">{{vaccineData.expDate}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">生产企业</view>
+                      <view class="weui-form-preview__value">{{vaccineData.manufacturer}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">收检编号</view>
+                      <view class="weui-form-preview__value">{{vaccineData.inspectionNum}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">证书编号</view>
+                      <view class="weui-form-preview__value">{{vaccineData.certificateNo}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">报告编号</view>
+                      <view class="weui-form-preview__value">{{vaccineData.reportNum}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">签发日期</view>
+                      <view class="weui-form-preview__value">{{vaccineData.issueDate}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">签发结论</view>
+                      <view class="weui-form-preview__value">{{vaccineData.issueConclusion}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">批签发机构</view>
+                      <view class="weui-form-preview__value">{{vaccineData.batchIssuingAgency}}</view>
+                  </view>
+                  <view class="weui-form-preview__item">
+                      <view class="weui-form-preview__label">报告表名</view>
+                      <view class="weui-form-preview__value">{{vaccineData.batchName}}</view>
+                  </view>
+
+                  <view class="weui-form-preview__item no-display">
+                      <view class="weui-form-preview__label">原始数据</view>
+                      <view class="weui-form-preview__value"><button class="mini-btn" type="primary" size="mini" data-url="{{vaccineData.batchUrl}}" onTap="copy">Copy</button></view>
+                  </view>
+                  <view class="weui-form-preview__item {{instructionUrl.length>0?'':'no-display'}}">
+                    <view class="weui-form-preview__label">下载说明书</view>
+                    <view class="weui-form-preview__value"><button class="mini-btn" type="primary" size="mini" data-url="{{instructionUrl}}" bindtap="downInstruction" disabled="{{downDisabled}}" id="downDcoument">Down</button></view>
+                  </view>
+                  <view class="weui-form-preview__item {{downProgress>0?'':'no-display'}}">
+                    <progress percent="{{downProgress}}" show-info />
+                  </view>
+  </view>
+</view>
