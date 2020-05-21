@@ -11,9 +11,25 @@ Page({
       url: app.globalData.serverUrl + '/mini/getlast',
       method: 'GET',
       success: (result) => {
-        console.info(result.data)
         this.setData({
           lastDate: result.data.data
+        })
+      }
+    });
+    // 获取用户信息
+    my.getAuthCode({
+      scopes: 'auth_base',
+      success: (res) => {
+        console.info(res.authCode)
+        my.request({
+          url: app.globalData.serverUrl + '/mini/ali_login?code=' + res.authCode,
+          method: 'GET',
+          success: (res) => {
+            console.info(result)
+          },
+          fail: function(res) {
+            console.info(res);
+          }
         })
       }
     });
@@ -51,9 +67,6 @@ Page({
   },
   onTitleClick() {
     // 标题被点击
-  },
-  onPullDownRefresh() {
-    // 页面被下拉
   },
   onReachBottom() {
     // 页面被拉到底部

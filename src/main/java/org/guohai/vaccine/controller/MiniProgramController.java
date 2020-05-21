@@ -27,6 +27,11 @@ public class MiniProgramController {
     @Autowired
     private HttpServletRequest request;
 
+    @RequestMapping(value = "/ali_login")
+    public Result<String> aliminiLogin(@ModelAttribute("code") String code) {
+
+    }
+
     @RequestMapping(value = "/oalogin")
     public Result<String> oalogin(@ModelAttribute("code") String code, @ModelAttribute("src") String src,
                                   @ModelAttribute("share_data") String shareData, @ModelAttribute("iv") String iv) {

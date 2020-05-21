@@ -50,4 +50,11 @@ public interface MiniProgramService {
      * @return
      */
     Result<String> putUserMoreInfo(WechatUserInfoBean userInfo);
+
+    /**
+     * 阿里小程序登录
+     * @param code
+     * @return
+     */
+    Result<String> aliMiniLogin(String code);
 }

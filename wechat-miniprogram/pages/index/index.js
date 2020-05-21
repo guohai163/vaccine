@@ -140,7 +140,7 @@ Page({
    */
   onShareAppMessage: function () {
     return {
-      title: '疫苗批号验证',
+      title: '帮您验证批号',
       path: '/pages/index/index?src=share',
       imageUrl: '/resources/images/400x340.jpg'
     }
