@@ -45,3 +45,7 @@ my-data:
     DTaP-IPVHib: {keyName: DTaP-IPV/Hib,des: 五联疫苗,accinationMonthAge: [0,0,1,2,3,0,0,0,0,0,4,0,0,0,0,0],state: false}
     PCV13: {keyName: PCV13,des: 13价肺炎疫苗,accinationMonthAge: [0,0,1,0,2,0,3,0,0,4,0,0,0,0,0,0],state: false}
     LLR: {keyName: LLR,des: 轮状病毒疫苗,accinationMonthAge: [0,0,0,0,0,0,1,0,0,0,2,3,4,0,5,0],state: false}
+  alipay-mini:
+    appid: 1111111111111
+    merchantPrivateKey: xxxxxx
+    alipayPublicKey: xxx
