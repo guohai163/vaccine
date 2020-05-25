@@ -3,19 +3,7 @@ Page({
   data: {
     lastDate: ''
   },
-  onLoad(query) {
-    // 页面加载
-    console.info(`Page onLoad with query: ${JSON.stringify(query)}`);
-    // 请求服务器最新版本日期
-    my.request({
-      url: app.globalData.serverUrl + '/mini/getlast',
-      method: 'GET',
-      success: (result) => {
-        this.setData({
-          lastDate: result.data.data
-        })
-      }
-    });
+  userLogin() {
     // 获取用户信息
     my.getAuthCode({
       scopes: 'auth_base',
@@ -31,6 +19,20 @@ Page({
           fail: function(requestRes) {
             console.info(requestRes);
           }
+        })
+      }
+    });
+  },
+  onLoad(query) {
+    // 页面加载
+    console.info(`Page onLoad with query: ${JSON.stringify(query)}`);
+    // 请求服务器最新版本日期
+    my.request({
+      url: app.globalData.serverUrl + '/mini/getlast',
+      method: 'GET',
+      success: (result) => {
+        this.setData({
+          lastDate: result.data.data
         })
       }
     });
@@ -56,6 +58,9 @@ Page({
   },
   onReady() {
     // 页面加载完成
+    if (app.globalData.userCode == '') {
+      this.userLogin();
+    }
   },
   onShow() {
     // 页面显示
