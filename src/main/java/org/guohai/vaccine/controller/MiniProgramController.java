@@ -29,7 +29,8 @@ public class MiniProgramController {
 
     @RequestMapping(value = "/ali_login")
     public Result<String> aliminiLogin(@ModelAttribute("code") String code) {
-
+        miniProgramService.aliMiniLogin(code);
+        return null;
     }
 
     @RequestMapping(value = "/oalogin")

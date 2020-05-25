@@ -26,6 +26,7 @@ Page({
           method: 'GET',
           success: (res) => {
             console.info(result)
+            app.globalData.userCode = res.authCode
           },
           fail: function(res) {
             console.info(res);

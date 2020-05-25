@@ -1,10 +1,6 @@
 package org.guohai.vaccine.service;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.request.AlipaySystemOauthTokenRequest;
-import com.alipay.api.response.AlipaySystemOauthTokenResponse;
+import com.alipay.easysdk.base.oauth.models.AlipaySystemOauthTokenResponse;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -31,17 +27,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import com.alipay.easysdk.factory.Factory;
+import com.alipay.easysdk.kernel.BaseClient.Config;
 
 
 @Service
@@ -60,6 +53,15 @@ public class MiniProgramServiceImpl implements MiniProgramService {
     @Value("${my-data.wechat-mini.appsecret}")
     private String appsecret;
 
+    @Value("${my-data.alipay-mini.appid}")
+    private String alipayAppId;
+
+    @Value("${my-data.alipay-mini.merchantPrivateKey}")
+    private String alipayMerchantPrivateKey;
+
+    @Value("${my-data.alipay-mini.alipayPublicKey}")
+    private  String alipayPublicKey;
+
     /**
      * 已登录用户数据，String存储为loginCode
      */
@@ -69,6 +71,34 @@ public class MiniProgramServiceImpl implements MiniProgramService {
     private static String AccessToken="";
 
     private static Date ATExpTime = new Date() ;
+
+    private Config getOptions() {
+        Config config = new Config();
+        config.protocol = "https";
+        config.gatewayHost = "openapi.alipay.com";
+        config.signType = "RSA2";
+
+        config.appId = alipayAppId;
+
+        // 为避免私钥随源码泄露，推荐从文件中读取私钥字符串而不是写入源码中
+        config.merchantPrivateKey = alipayMerchantPrivateKey;
+
+        //注：证书文件路径支持设置为文件系统中的路径或CLASS_PATH中的路径，优先从文件系统中加载，加载失败后会继续尝试从CLASS_PATH中加载
+//        config.merchantCertPath = "<-- 请填写您的应用公钥证书文件路径，例如：/foo/appCertPublicKey_2019051064521003.crt -->";
+//        config.alipayCertPath = "<-- 请填写您的支付宝公钥证书文件路径，例如：/foo/alipayCertPublicKey_RSA2.crt -->";
+//        config.alipayRootCertPath = "<-- 请填写您的支付宝根证书文件路径，例如：/foo/alipayRootCert.crt -->";
+
+        //注：如果采用非证书模式，则无需赋值上面的三个证书路径，改为赋值如下的支付宝公钥字符串即可
+         config.alipayPublicKey = alipayPublicKey;
+
+        //可设置异步通知接收服务地址（可选）
+//        config.notifyUrl = "<-- 请填写您的支付类接口异步通知接收服务地址，例如：https://www.test.com/callback -->";
+
+        //可设置AES密钥，调用AES加解密相关接口时需要（可选）
+//        config.encryptKey = "<-- 请填写您的AES密钥，例如：aa4BtZ4tspm2wnXLb1ThQA== -->";
+
+        return config;
+    }
 
     /*** 小程序登录
      *
@@ -232,23 +262,27 @@ public class MiniProgramServiceImpl implements MiniProgramService {
      * @return
      */
     @Override
-    public Result<String> aliMiniLogin(String code) {
-        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do","app_id","your private_key","json","utf-8","alipay_public_key","RSA2");
-        AlipaySystemOauthTokenRequest request = new AlipaySystemOauthTokenRequest();
-        request.setGrantType("authorization_code");
-        request.setCode(code);
+    public AlipaySystemOauthTokenResponse aliMiniLogin(String code) {
+        // TODO: ali
+        Factory.setOptions(getOptions());
         AlipaySystemOauthTokenResponse response = null;
         try {
-            response = alipayClient.execute(request);
-        } catch (AlipayApiException e) {
+            response = Factory.Base.OAuth().getToken(code);
+            WechatUserBean wechatUserBean = new WechatUserBean(response.userId,code,response.accessToken,"alipay",new Date(),"");
+            WechatUserBean dbOldUser = vaccineDao.getUserByOpenId(wechatUserBean.getOpenId());
+            if(dbOldUser == null) {
+                vaccineDao.addUser(wechatUserBean);
+                UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
+            }else {
+                UserMap.remove(dbOldUser.getLoginCode());
+
+                UserMap.put(wechatUserBean.getLoginCode(),wechatUserBean);
+                vaccineDao.setUser(wechatUserBean);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        if(response.isSuccess()){
-            System.out.println("调用成功");
-        } else {
-            System.out.println("调用失败");
-        }
-        return null;
+        return response;
     }
 
     private Boolean getWCAccessToken(){

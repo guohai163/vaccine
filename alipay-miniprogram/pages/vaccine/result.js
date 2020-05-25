@@ -11,6 +11,9 @@ Page({
     my.request({
       url: app.globalData.serverUrl + '/mini/search/' + options.query + '?formId=' + options.formId,
       method: 'GET',
+      headers:{
+        'login-code':app.globalData.userCode
+      },
       success: (result) => {
         console.info(result)
         console.info(result.status)

@@ -1,5 +1,6 @@
 package org.guohai.vaccine.service;
 
+import com.alipay.easysdk.base.oauth.models.AlipaySystemOauthTokenResponse;
 import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.beans.VaccineAccessLog;
 import org.guohai.vaccine.beans.WechatUserBean;
@@ -56,5 +57,5 @@ public interface MiniProgramService {
      * @param code
      * @return
      */
-    Result<String> aliMiniLogin(String code);
+    AlipaySystemOauthTokenResponse aliMiniLogin(String code);
 }
