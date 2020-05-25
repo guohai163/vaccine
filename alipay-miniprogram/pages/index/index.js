@@ -24,12 +24,12 @@ Page({
         my.request({
           url: app.globalData.serverUrl + '/mini/ali_login?code=' + res.authCode,
           method: 'GET',
-          success: (res) => {
-            console.info(result)
+          success: (requestRes) => {
+            console.info(requestRes)
             app.globalData.userCode = res.authCode
           },
-          fail: function(res) {
-            console.info(res);
+          fail: function(requestRes) {
+            console.info(requestRes);
           }
         })
       }

@@ -281,6 +281,7 @@ public class MiniProgramServiceImpl implements MiniProgramService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LOG.error(e.toString());
         }
         return response;
     }
