@@ -66,3 +66,6 @@ view {
   word-wrap: break-word;
   color: #000;
 }
+.no-display {
+  display: none;
+}

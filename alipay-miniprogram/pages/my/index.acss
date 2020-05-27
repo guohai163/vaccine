@@ -1,0 +1,33 @@
+.no-login {
+  display: flex;
+  padding: 20rpx;
+  font-size: 32rpx;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+}
+.nologin-right{
+  align-items: center;
+  justify-content: end;
+  display: flex;
+}
+.nologin-right image {
+  height: 80rpx;
+  width: 80rpx;
+  border-radius:50%;
+}
+.no-login-top {
+  background: #f5f5f5;
+}
+.no-login-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rpx;
+  align-items: center;
+  background: #ffffff;
+  font-size: 26rpx;
+}
+.no-login-content image {
+  width: 300rpx;
+}

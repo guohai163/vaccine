@@ -6,9 +6,7 @@
   font-size: 28rpx;
   background-color: #EC7063;
 }
-.no-display {
-  display: none;
-}
+
 
 .odd{
   background-color: #FDEBD0;

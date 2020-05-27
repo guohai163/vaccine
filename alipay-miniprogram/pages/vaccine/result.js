@@ -16,10 +16,6 @@ Page({
         'login-code': app.globalData.userCode
       },
       success: (result) => {
-        console.info(result)
-        console.info(result.status)
-        console.info(result.data.status)
-        console.info(result.data.data.length)
         if(result.status == 200 && result.data.status == true && result.data.data.length>0){
           this.setData({
             vaccineData: result.data.data,

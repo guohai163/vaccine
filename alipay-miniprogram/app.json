@@ -2,9 +2,29 @@
   "pages": [
     "pages/index/index",
     "pages/vaccine/result",
-    "pages/vaccine/resultmore"
+    "pages/vaccine/resultmore",
+    "pages/my/index"
   ],
   "window": {
     "defaultTitle": "疫苗批号验证"
+  },
+  "tabBar": {
+    "textColor": "#444444",
+    "selectedColor": "#1677ff",
+    "backgroundColor": "#ffffff",
+    "items": [
+      {
+        "pagePath": "pages/index/index",
+        "name": "疫苗查询",
+        "icon": "resources/images/query.png",
+        "activeIcon": "resources/images/query_h.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "name": "我的",
+        "icon": "resources/images/my.png",
+        "activeIcon": "resources/images/my_h.png"
+      }
+    ]
   }
 }

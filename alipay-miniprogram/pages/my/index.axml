@@ -1,0 +1,33 @@
+<view class="{{isLogin?'no-display':''}}">
+  <view class="no-login-top">
+    <view class="no-login">
+      <button open-type="getAuthorize" onGetAuthorize="onGetAuthorize" onError="onAuthError" scope="userInfo" size="mini" type="primary" plain="{{true}}">授权登录</button>
+      <view class="nologin-right">
+        <image src="/resources/images/personal.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    <view class="line"></view>
+    <view class="no-login-content">
+      <image mode="aspectFit" src="/resources/images/logo.png"></image>
+      授权登录后可快速记录您所查询过的疫苗信息历史记录。
+    </view>
+  </view>
+
+
+</view>
+<view class="{{isLogin?'':'no-display'}}">
+  <view class="no-login-top">
+    <view class="no-login">
+      <view>你好,{{userNick}}</view>
+      <view class="nologin-right">
+        
+        
+        <image src="{{userAvatar}}" mode="aspectFit"></image>
+      </view>
+    </view>
+    <view class="line"></view>
+    <view class="no-login-content">
+      列表数据
+    </view>
+  </view>
+</view>

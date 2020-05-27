@@ -6,6 +6,7 @@ App({
     serverUrl: "https://api.vaccine.pub",
     downloadUrl: "https://static.vaccine.pub",
     userCode: '',
+    isAllAuth: false,
     src: '',
     version: '0.8.5',
     shareTicket: undefined
