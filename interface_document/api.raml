@@ -6,6 +6,17 @@ baseUri: http://127.0.0.1:8000
 
 
 /mini:
+  /getmyist:
+    get:
+  /postvcode:
+    post:
+      responses:
+        200
+      headers:
+        login-code:
+          type: string
+          example:
+            login-code: 001uyal32HKFYQ0MLFl32iHSk32uyald
   /checkcode:
     displayName: 检查登录loginCode是否有效
     get:

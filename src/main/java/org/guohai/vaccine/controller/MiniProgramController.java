@@ -1,18 +1,21 @@
 package org.guohai.vaccine.controller;
 
 import org.guohai.vaccine.beans.Result;
+import org.guohai.vaccine.beans.UserQueryHistory;
 import org.guohai.vaccine.beans.VaccineBatchBean;
 import org.guohai.vaccine.service.MiniProgramService;
 import org.guohai.vaccine.service.VaccineBatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/mini")
@@ -66,4 +69,25 @@ public class MiniProgramController {
         return miniProgramService.checkLoginCode(loginCode);
     }
 
+
+    /***
+     * 提交查询结果值
+     * @param loginCode
+     * @param jsonParam
+     * @return
+     */
+    @ResponseBody
+//    @RequestMapping(method = RequestMethod.POST, value = "/postvcode", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/postvcode")
+    public Result<String> saveQueryResult(@RequestHeader(value = "login-code",required = false)String loginCode,
+                                          @RequestBody Map<String, Object> jsonParam){
+        LOG.info(String.format("parm %s %s", loginCode, jsonParam.get("vaccineCode")));
+        return new Result<>(true, "");
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getmyist")
+    public Result<List<UserQueryHistory>> getMySaveList(@RequestHeader(value = "login-code",required = false)String loginCode) {
+        return new Result<>(true, null);
+    }
 }
