@@ -1,10 +1,7 @@
 package org.guohai.vaccine.service;
 
 import com.alipay.easysdk.base.oauth.models.AlipaySystemOauthTokenResponse;
-import org.guohai.vaccine.beans.Result;
-import org.guohai.vaccine.beans.VaccineAccessLog;
-import org.guohai.vaccine.beans.WechatUserBean;
-import org.guohai.vaccine.beans.WechatUserInfoBean;
+import org.guohai.vaccine.beans.*;
 
 import java.util.List;
 
@@ -58,4 +55,34 @@ public interface MiniProgramService {
      * @return
      */
     AlipaySystemOauthTokenResponse aliMiniLogin(String code);
+
+    /***
+     * 增加用户更多信息
+     * @param loginCode
+     * @param userInfo
+     * @return
+     */
+    Result<String> addUserInfo(String loginCode, VaccineUserInfoBean userInfo);
+
+    /***
+     * 获取用户信息
+     * @param loginCode
+     * @return
+     */
+    Result<VaccineUserInfoBean> getUserInfo(String loginCode);
+
+    /***
+     *  增加用户历史记录
+     * @param loginCode
+     * @param vaccineCode
+     * @return
+     */
+    Result<String> addUserQueryHistory(String loginCode, Integer vaccineCode);
+
+    /***
+     * 查询用户的查询历史
+     * @param loginCode
+     * @return
+     */
+    Result<List<UserQueryHistory>> queryUserHistory(String loginCode);
 }

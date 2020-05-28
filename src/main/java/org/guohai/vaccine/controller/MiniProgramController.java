@@ -3,17 +3,16 @@ package org.guohai.vaccine.controller;
 import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.beans.UserQueryHistory;
 import org.guohai.vaccine.beans.VaccineBatchBean;
+import org.guohai.vaccine.beans.VaccineUserInfoBean;
 import org.guohai.vaccine.service.MiniProgramService;
 import org.guohai.vaccine.service.VaccineBatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -82,12 +81,28 @@ public class MiniProgramController {
     public Result<String> saveQueryResult(@RequestHeader(value = "login-code",required = false)String loginCode,
                                           @RequestBody Map<String, Object> jsonParam){
         LOG.info(String.format("parm %s %s", loginCode, jsonParam.get("vaccineCode")));
-        return new Result<>(true, "");
+        return miniProgramService.addUserQueryHistory(loginCode, Integer.parseInt(jsonParam.get("vaccineCode").toString()));
     }
 
     @ResponseBody
     @GetMapping(value = "/getmyist")
     public Result<List<UserQueryHistory>> getMySaveList(@RequestHeader(value = "login-code",required = false)String loginCode) {
         return new Result<>(true, null);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getuserinfo")
+    public Result<VaccineUserInfoBean> getUserInfo(@RequestHeader(value = "login-code",required = false)String loginCode) {
+        return miniProgramService.getUserInfo(loginCode);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/postuserinfo")
+    public Result<String> postUserInfo(@RequestHeader(value = "login-code",required = false)String loginCode,
+                                       @RequestBody Map<String, Object> jsonParam) {
+        VaccineUserInfoBean userInfo = new VaccineUserInfoBean("", jsonParam.get("gender").toString(),
+                jsonParam.get("avatar").toString(), jsonParam.get("city").toString(), jsonParam.get("countryCode").toString(),
+                jsonParam.get("nickName").toString(), jsonParam.get("province").toString(), new Date());
+        return miniProgramService.addUserInfo(loginCode, userInfo);
     }
 }

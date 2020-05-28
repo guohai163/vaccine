@@ -11,11 +11,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import org.apache.http.util.EntityUtils;
-import org.guohai.vaccine.beans.Result;
-import org.guohai.vaccine.beans.VaccineAccessLog;
-import org.guohai.vaccine.beans.WechatUserBean;
-import org.guohai.vaccine.beans.WechatUserInfoBean;
+import org.guohai.vaccine.beans.*;
 import org.guohai.vaccine.dao.VaccineDao;
+import org.guohai.vaccine.dao.VaccineUserDao;
 import org.guohai.vaccine.utilities.WxCryptUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +44,9 @@ public class MiniProgramServiceImpl implements MiniProgramService {
 
     @Autowired
     VaccineDao vaccineDao;
+
+    @Autowired
+    VaccineUserDao vaccineUserDao;
 
     @Value("${my-data.wechat-mini.appid}")
     private String appid;
@@ -284,6 +285,68 @@ public class MiniProgramServiceImpl implements MiniProgramService {
             LOG.error(e.toString());
         }
         return response;
+    }
+
+    /***
+     * 增加用户更多信息
+     * @param loginCode
+     * @param userInfo
+     * @return
+     */
+    @Override
+    public Result<String> addUserInfo(String loginCode, VaccineUserInfoBean userInfo) {
+        if(null == vaccineUserDao.getUserInfo(loginCode)) {
+            // 只有当没有记录过用户详细时间才进行记录
+            WechatUserBean userBase = vaccineDao.getUserByLoginCode(loginCode);
+            if(null == userBase) {
+                return new Result<>(false, "用户未登录过");
+            }
+            userInfo.setUserCode(userBase.getOpenId());
+            vaccineUserDao.addUserInfo(userInfo);
+            return new Result<>(true, "数据记录成功");
+        }
+        return new Result<>(true, "已经有刺记录");
+    }
+
+    /***
+     * 获取用户信息
+     * @param loginCode
+     * @return
+     */
+    @Override
+    public Result<VaccineUserInfoBean> getUserInfo(String loginCode) {
+        VaccineUserInfoBean userInfo =vaccineUserDao.getUserInfo(loginCode);
+        if(null == userInfo) {
+            return new Result<>(false,null);
+        }
+        else {
+            return new Result<>(true, userInfo);
+        }
+    }
+
+    @Override
+    public Result<String> addUserQueryHistory(String loginCode, Integer vaccineCode) {
+        WechatUserBean userBase = vaccineDao.getUserByLoginCode(loginCode);
+        if(null != userBase){
+            vaccineUserDao.addQueryHistory(userBase.getOpenId(), vaccineCode, new Date());
+            return new Result<>(true, "成功");
+        }
+        return new Result<>(false, "没有该用户");
+    }
+
+    /***
+     * 查询用户的查询历史
+     * @param loginCode
+     * @return
+     */
+    @Override
+    public Result<List<UserQueryHistory>> queryUserHistory(String loginCode) {
+        WechatUserBean userBase = vaccineDao.getUserByLoginCode(loginCode);
+        if(null != userBase){
+
+            return new Result<>(true, null);
+        }
+        return new Result<>(false, null);
     }
 
     private Boolean getWCAccessToken(){

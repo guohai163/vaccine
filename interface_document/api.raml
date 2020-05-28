@@ -6,12 +6,40 @@ baseUri: http://127.0.0.1:8000
 
 
 /mini:
+  /postuserinfo:
+    post:
+      headers:
+        login-code:
+          type: string
+      body:
+        application/json:
+          examples: |
+            {"avatar": "https://tfs.alipayobjects.com/images/partner/T1ckVvXX4XXXXXXXXX",
+             "city": "杭州市",
+             "countryCode": "CN",
+             "gender": "m",
+             "nickName": "海",
+             "province": "浙江省"}
+      responses:
+        200:
+  /getuserinfo:
+    get:
+      headers:
+        login-code:
+          type: string
+      responses:
+        200:
   /getmyist:
     get:
+      responses:
+        200:
+      headers:
+        login-code:
+          type: string
   /postvcode:
     post:
       responses:
-        200
+        200:
       headers:
         login-code:
           type: string
