@@ -54,7 +54,7 @@ public interface MiniProgramService {
      * @param code
      * @return
      */
-    AlipaySystemOauthTokenResponse aliMiniLogin(String code);
+    Result<String> aliMiniLogin(String code);
 
     /***
      * 增加用户更多信息

@@ -1,11 +1,13 @@
 App({
   globalData: {
     lastDate: null,
-    // serverUrl: "http://127.0.0.1:8000",
+    serverUrl: "http://127.0.0.1:8000",
     // serverUrl: "http://vaccine.guohai.org",
-    serverUrl: "https://api.vaccine.pub",
+    // serverUrl: "https://api.vaccine.pub",
     downloadUrl: "https://static.vaccine.pub",
     userCode: '',
+    userAvatar: '',
+    userNick: '',
     isAllAuth: false,
     src: '',
     version: '0.8.5',

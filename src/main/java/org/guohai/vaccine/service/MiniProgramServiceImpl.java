@@ -263,7 +263,7 @@ public class MiniProgramServiceImpl implements MiniProgramService {
      * @return
      */
     @Override
-    public AlipaySystemOauthTokenResponse aliMiniLogin(String code) {
+    public Result<String> aliMiniLogin(String code) {
         // TODO: ali
         Factory.setOptions(getOptions());
         AlipaySystemOauthTokenResponse response = null;
@@ -283,8 +283,9 @@ public class MiniProgramServiceImpl implements MiniProgramService {
         } catch (Exception e) {
             e.printStackTrace();
             LOG.error(e.toString());
+            return new Result<>(false, e.toString());
         }
-        return response;
+        return new Result<>(true, "成功");
     }
 
     /***

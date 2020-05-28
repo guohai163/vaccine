@@ -2,11 +2,31 @@ const app = getApp();
 Page({
   data: {
     isLogin: app.globalData.isAllAuth,
-    userAvatar: '',
-    userNick: ''
+    userAvatar: app.globalData.userAvatar,
+    userNick: app.globalData.userNick
   },
   onLoad() {
-    console.info(app.globalData.isAllAuth)
+    my.request({
+      url: app.globalData.serverUrl + '/mini/getuserinfo',
+      method: 'GET',
+      headers:{
+        'login-code': app.globalData.userCode
+      },
+      success: (result) => {
+        console.info(result.data)
+        if(result.data.status) {
+          this.setData({
+            isLogin: true,
+            userAvatar: result.data.data.avatar,
+            userNick: result.data.data.nickName
+          })
+          // TODO:写globalData
+          app.globalData.isAllAuth = true;
+          app.globalData.userAvatar = result.data.data.avatar;
+          app.globalData.userNick = result.data.data.nickName
+        }
+      }
+    });
   },
   onGetAuthorize() {
     my.getOpenUserInfo({
@@ -21,6 +41,17 @@ Page({
           isLogin: true
         })
         app.globalData.isAllAuth = true;
+        my.request({
+          url: app.globalData.serverUrl + '/mini/postuserinfo',
+          method: 'POST',
+          headers:{
+            'login-code': app.globalData.userCode
+          },
+          data: userData,
+          success: (result) => {
+            console.info(result)
+          }
+        })
       },
       fail: (res) => {
         console.info(res)
