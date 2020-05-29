@@ -342,10 +342,10 @@ public class MiniProgramServiceImpl implements MiniProgramService {
      */
     @Override
     public Result<List<UserQueryHistory>> queryUserHistory(String loginCode) {
-        WechatUserBean userBase = vaccineDao.getUserByLoginCode(loginCode);
-        if(null != userBase){
-
-            return new Result<>(true, null);
+        VaccineUserInfoBean userInfo = vaccineUserDao.getUserInfo(loginCode);
+        if(null != userInfo){
+            List<UserQueryHistory> listHistory = vaccineUserDao.queryUserHistory(userInfo.getUserCode());
+            return new Result<>(true, listHistory);
         }
         return new Result<>(false, null);
     }

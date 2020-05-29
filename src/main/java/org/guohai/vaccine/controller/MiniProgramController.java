@@ -84,9 +84,9 @@ public class MiniProgramController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/getmyist")
+    @GetMapping(value = "/getmylist")
     public Result<List<UserQueryHistory>> getMySaveList(@RequestHeader(value = "login-code",required = false)String loginCode) {
-        return new Result<>(true, null);
+        return miniProgramService.queryUserHistory(loginCode);
     }
 
     @ResponseBody
