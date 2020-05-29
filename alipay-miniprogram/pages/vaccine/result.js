@@ -33,7 +33,7 @@ Page({
   },
   more(event) {
     my.navigateTo({
-      url: '/pages/vaccine/resultmore?data=' + JSON.stringify(this.data.vaccineData[event.currentTarget.id]).replace('&','%26')
+      url: '/pages/vaccine/resultmore?issave=true&data=' + JSON.stringify(this.data.vaccineData[event.currentTarget.id]).replace('&','%26')
     });
   }
 });

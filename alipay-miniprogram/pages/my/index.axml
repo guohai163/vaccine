@@ -1,4 +1,4 @@
-<view class="{{isLogin?'no-display':''}}">
+<view a:if="{{!isLogin}}">
   <view class="no-login-top">
     <view class="no-login">
       <button open-type="getAuthorize" onGetAuthorize="onGetAuthorize" onError="onAuthError" scope="userInfo" size="mini" type="primary" plain="{{true}}">授权登录</button>
@@ -15,7 +15,7 @@
 
 
 </view>
-<view class="{{isLogin?'':'no-display'}}">
+<view a:if="{{isLogin}}">
   <view class="no-login-top">
     <view class="no-login">
       <view>你好,{{userNick}}</view>
@@ -26,8 +26,36 @@
       </view>
     </view>
     <view class="line"></view>
-    <view class="no-login-content">
-      列表数据
+    <view class="login-content">
+      <view a:if="{{userHistoryList.length == 0}}">
+        您还有没查询记录
+      </view>
+      <view class="vaccine-list" a:for="{{userHistoryList}}" a:for-index="idx" a:for-item="itemName">
+        <view class="{{idx%2==0?'odd':'even'}} result-item" id="{{idx}}" onTap="more">
+          <view class="weui-form-preview__bd" >
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">品种名称</view>
+                        <view class="weui-form-preview__value">{{itemName.productName}}</view>
+                    </view>
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">批次号</view>
+                        <view class="weui-form-preview__value">{{itemName.batchNo}}</view>
+                    </view>
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">有效期</view>
+                        <view class="weui-form-preview__value">{{itemName.expDate}}</view>
+                    </view>
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">签发结论</view>
+                        <view class="weui-form-preview__value">{{itemName.issueConclusion}}</view>
+                    </view>
+                    <view class="weui-form-preview__item">
+                        <view class="weui-form-preview__label">查询日期</view>
+                        <view class="weui-form-preview__value">{{itemName.squeryDate}}</view>
+                    </view>
+            </view>
+          <view class="vaccine-more" aira-role="button" aira-label="点击后可获得疫苗详细信息">详细 ></view>
+      </view>
     </view>
   </view>
 </view>

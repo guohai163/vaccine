@@ -31,3 +31,46 @@
 .no-login-content image {
   width: 300rpx;
 }
+
+.result-warning {
+  border: 1rpx solid #aaa;
+  border-radius: 5rpx;
+  padding: 20rpx;
+  margin: 20rpx;
+  font-size: 28rpx;
+  background-color: #EC7063;
+}
+
+
+.odd{
+  background-color: #FDEBD0;
+}
+.even {
+  background-color: #D4EFDF;
+}
+.result-title {
+  padding: 20rpx;
+  font-size: 32rpx;
+}
+.vaccine-list {
+  padding: 20rpx;
+  font-size: 28rpx;
+}
+.result-title {
+  padding: 20rpx;
+  font-size: 32rpx;
+}
+
+.result-item {
+  border: 1rpx solid #aaa;
+  border-radius: 5rpx;
+}
+.vaccine-more {
+  text-align: right;
+  border-top: 1rpx solid #aaa;
+  padding: 10rpx;
+  padding-right: 20rpx;
+}
+.login-content {
+  background: #ffffff;
+}
