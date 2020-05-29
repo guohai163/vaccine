@@ -9,4 +9,5 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserQueryHistory extends VaccineBatchBean {
     private Date queryDate;
+    private String sQueryDate;
 }

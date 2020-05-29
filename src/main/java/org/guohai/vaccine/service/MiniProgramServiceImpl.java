@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -345,6 +346,10 @@ public class MiniProgramServiceImpl implements MiniProgramService {
         VaccineUserInfoBean userInfo = vaccineUserDao.getUserInfo(loginCode);
         if(null != userInfo){
             List<UserQueryHistory> listHistory = vaccineUserDao.queryUserHistory(userInfo.getUserCode());
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for(UserQueryHistory item :listHistory) {
+                item.setSQueryDate(sdf.format(item.getQueryDate()));
+            }
             return new Result<>(true, listHistory);
         }
         return new Result<>(false, null);
