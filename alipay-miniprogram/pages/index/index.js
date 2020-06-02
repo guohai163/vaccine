@@ -1,7 +1,7 @@
 const app = getApp();
 Page({
   data: {
-    lastDate: ''
+    version: app.globalData.version
   },
   userLogin() {
     // 获取用户信息
@@ -27,15 +27,15 @@ Page({
     // 页面加载
     console.info(`Page onLoad with query: ${JSON.stringify(query)}`);
     // 请求服务器最新版本日期
-    my.request({
-      url: app.globalData.serverUrl + '/mini/getlast',
-      method: 'GET',
-      success: (result) => {
-        this.setData({
-          lastDate: result.data.data
-        })
-      }
-    });
+    // my.request({
+    //   url: app.globalData.serverUrl + '/mini/getlast',
+    //   method: 'GET',
+    //   success: (result) => {
+    //     this.setData({
+    //       lastDate: result.data.data
+    //     })
+    //   }
+    // });
   },
   formSubmit(e) {
     // 表单提交，准备跳转页面

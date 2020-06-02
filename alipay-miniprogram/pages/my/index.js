@@ -5,7 +5,8 @@ Page({
     isLogin: false,
     userAvatar: '',
     userNick: '',
-    userHistoryList: null
+    userHistoryList: null,
+    lastDate: ''
   },
   bindHistoryData() {
     let historyCache = my.getStorageSync({
@@ -82,7 +83,16 @@ Page({
         }
       });
     }
-
+    // 请求服务器最新版本日期
+    // my.request({
+    //   url: app.globalData.serverUrl + '/mini/getlast',
+    //   method: 'GET',
+    //   success: (result) => {
+    //     this.setData({
+    //       lastDate: result.data.data
+    //     })
+    //   }
+    // });
   },
   onGetAuthorize() {
     my.getOpenUserInfo({

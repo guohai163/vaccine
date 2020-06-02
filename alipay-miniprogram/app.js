@@ -11,7 +11,7 @@ App({
     userNick: '',
     isAllAuth: false,
     src: '',
-    version: '0.9.0',
+    version: '0.9.5',
     shareTicket: undefined
   },
   onLaunch(options) {

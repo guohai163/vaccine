@@ -23,7 +23,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 1rpx;
+  margin-top: 2rpx;
   align-items: center;
   background: #ffffff;
   font-size: 26rpx;
@@ -72,5 +72,9 @@
   padding-right: 20rpx;
 }
 .login-content {
+  background: #ffffff;
+  margin-top: 2rpx;
+}
+.foot-color {
   background: #ffffff;
 }

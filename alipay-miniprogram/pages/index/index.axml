@@ -17,5 +17,5 @@
   </form>
 </view>
 <view class="weui-footer weui-footer_fixed-bottom">
-<view class="weui-footer__text easter_egg" bindtap="easterEgg">数据最后更新时间:{{lastDate}}</view>
+<view class="weui-footer__text">程序版本号:{{version}}</view>
 </view>
