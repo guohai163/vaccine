@@ -7,10 +7,9 @@ Page({
     resultCount: 0
   },
   onLoad(options) {
-    console.info(options)
-    console.info(app.globalData.userCode)
+    console.info(app.globalData.serverUrl + '/mini/search/' + options.query.replace('/','') + '?formId=' + options.formId)
     my.request({
-      url: app.globalData.serverUrl + '/mini/search/' + options.query + '?formId=' + options.formId,
+      url: app.globalData.serverUrl + '/mini/search/' + options.query.replace('/','') + '?formId=' + options.formId,
       method: 'GET',
       headers:{
         'login-code': app.globalData.userCode
