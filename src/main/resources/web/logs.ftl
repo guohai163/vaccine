@@ -4,7 +4,8 @@
     <#include "inc/head.ftl">
 </head>
 <body>
-
+<#assign ftlname = .current_template_name>
+<#include "/inc/admin-left.ftl" />
 <div style="float: left;">
 <table  border="1" cellspacing="0">
     <#list accesslogs as log>

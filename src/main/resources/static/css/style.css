@@ -9,3 +9,52 @@ table {
 .ui-draggable, .ui-droppable {
 	background-position: top;
 }
+.left-aside{
+    background-color: #41586e;
+    height: 100%;
+    color: #9db1c5;
+    width: 220px;
+    display: table-cell;
+    vertical-align: top;
+}
+.jbox {
+    display: table;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.slimScrolldiv li>a{
+    border-top:1px solid transparent;
+    border-color: rgba(255,255,255,0.05);
+    padding: 11px 15px;
+    font-size: 14px;
+    display: block;
+    cursor: pointer;
+    color: #adbece;
+}
+.slimScrolldiv li {
+    line-height: 1.5;
+    display: block;
+}
+.slimScrolldiv li>a>i {
+    width: 44px;
+    line-height: 44px;
+    float: left;
+    margin: -12px -15px;
+    margin-right: 10px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
+    position: relative;
+}
+
+.slimScrolldiv {
+    position: relative;
+    width: auto;
+    height: 100%;
+    list-style: none;
+}
+.nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}

@@ -39,4 +39,7 @@ public interface VaccineUserDao {
             "WHERE user_code=#{userCode}\n" +
             "ORDER BY query_date DESC limit 30;")
     List<UserQueryHistory> queryUserHistory(@Param("userCode") String userCode);
+
+    @Select("select * from vaccine_user_info_tb WHERE user_code=#{userCode}")
+    VaccineUserInfoBean getUserInfoByUserCode(@Param("userCode") String userCode);
 }

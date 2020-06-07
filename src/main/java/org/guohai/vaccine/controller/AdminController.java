@@ -2,6 +2,7 @@ package org.guohai.vaccine.controller;
 
 import org.guohai.vaccine.beans.Result;
 import org.guohai.vaccine.beans.WechatUserInfoBean;
+import org.guohai.vaccine.service.AdminService;
 import org.guohai.vaccine.service.MiniProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,9 @@ public class AdminController {
 
     @Autowired
     MiniProgramService miniProgramService;
+
+    @Autowired
+    AdminService adminSerivce;
 
     @RequestMapping("/log")
     public String getAccessLogs(Model model) {
@@ -52,5 +56,10 @@ public class AdminController {
     public Result<String> putUserMoreInfo(@RequestBody WechatUserInfoBean userInfo) {
 
         return miniProgramService.putUserMoreInfo(userInfo);
+    }
+    @RequestMapping("/userinfo")
+    public String getUserInfo(Model model, @ModelAttribute(value = "usercode")String userCode) {
+        model.addAttribute("userinfo", adminSerivce.getUserInfoByCode(userCode));
+        return "admin/userinfo";
     }
 }
