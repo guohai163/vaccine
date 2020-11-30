@@ -14,6 +14,12 @@ public interface VaccineBatchService {
     Result<String> nifdcVaccineData(String yeah,String index);
 
     /**
+     * 新版本nifdc数据处理
+     * @return 返回处理结果
+     */
+    Result<String> newVersionNifdcVaccineData();
+
+    /**
      *
      * @param battchNo
      * @param loginCode

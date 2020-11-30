@@ -28,9 +28,10 @@ public class CheckDataDailyUtilities {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
 
-        if(c.get(Calendar.MONTH)==0){
-            vaccineBatchService.nifdcVaccineData(String.valueOf(c.get(Calendar.YEAR)-1),"");
-        }
-        vaccineBatchService.nifdcVaccineData(new SimpleDateFormat("yyyy").format( new Date()),"");
+        vaccineBatchService.newVersionNifdcVaccineData();
+//        if(c.get(Calendar.MONTH)==0){
+//            vaccineBatchService.nifdcVaccineData(String.valueOf(c.get(Calendar.YEAR)-1),"");
+//        }
+//        vaccineBatchService.nifdcVaccineData(new SimpleDateFormat("yyyy").format( new Date()),"");
     }
 }

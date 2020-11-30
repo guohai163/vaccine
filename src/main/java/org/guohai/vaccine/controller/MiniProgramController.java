@@ -55,7 +55,7 @@ public class MiniProgramController {
     @RequestMapping(value = "/getlast")
     @CrossOrigin
     public Result<String> getDataLast() {
-        LOG.info("user in,ip:"+request.getRemoteAddr()+",UA:"+request.getHeader("User-Agent"));
+//        LOG.info("user in,ip:"+request.getRemoteAddr()+",UA:"+request.getHeader("User-Agent"));
         return vaccineBatchService.getLastDate();
     }
 

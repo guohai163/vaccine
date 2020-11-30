@@ -21,6 +21,9 @@ public interface VaccineDao {
     @Select("SELECT count(*) FROM vaccine_url_tb WHERE batch_url=#{batchUrl}")
     Integer getBatchUrlCount(@Param("batchUrl") String batchUrl);
 
+    @Select("SELECT count(*) FROM vaccine_url_tb WHERE batch_name like #{batchTitle}")
+    Integer getBatchTitleCount(@Param("batchTitle") String batchTitle);
+
     @Update("update vaccine_url_tb set batch_date=#{batch.batchDate} WHERE batch_url=#{batch.batchUrl}")
     Boolean updateCatchDate(@Param("batch") VaccineUrlBean batch);
 
