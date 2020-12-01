@@ -118,6 +118,9 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
             }
             // 增加
             vaccineDao.addBatchUrl(urlBean);
+            // 更新 最后时间
+            lastDate = urlBean.getBatchDate();
+
             List<VaccineBatchBean> listBatch = null;
             try {
                 listBatch = vaccineBatchQuery2020(urlBean.getCode(),urlBean.getBatchUrl());
