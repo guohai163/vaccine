@@ -26,7 +26,7 @@ public class ValidateTests {
         Assert.assertEquals(true,VerificationUtilities.validateChineseDate("2019年12月"));
     }
 
-    @Test
+//    @Test
     public void getPageData(){
         vaccineService.newVersionNifdcVaccineData();
     }

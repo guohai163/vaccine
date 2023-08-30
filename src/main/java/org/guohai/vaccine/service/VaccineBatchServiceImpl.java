@@ -391,18 +391,4 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
 
     }
 
-    @Override
-    public String importData(int code)  {
-        VaccineUrlBean vaccineUrlBean=  vaccineDao.getVUbyCode(code);
-        try {
-            List<VaccineBatchBean> listV =  vaccineBatchQuery2021(vaccineUrlBean.getCode(),vaccineUrlBean.getBatchUrl(),vaccineUrlBean.getBatchDate());
-            LOG.info(String.format("在URL[%s]抓取到数据[%d]条",vaccineUrlBean.getBatchUrl(),listV.size()));
-            for(VaccineBatchBean batchBean: listV) {
-                vaccineDao.addVaccineBatchData(batchBean);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return vaccineUrlBean.getBatchUrl();
-    }
 }
