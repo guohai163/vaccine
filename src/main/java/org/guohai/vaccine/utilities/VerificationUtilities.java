@@ -34,7 +34,7 @@ public final class VerificationUtilities {
      * @return
      */
     public static boolean validateChineseDate(String param) {
-        return param.matches("^[0-9]{4}年[0-9]{1,2}月[0-9]{0,2}[日]?.*");
+        return param.matches("^[0-9]{4}[-年./]?[0-9]{1,2}[-月./]?[0-9]{0,2}[日]?.*");
     }
 
     /**

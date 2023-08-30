@@ -123,7 +123,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
 
             List<VaccineBatchBean> listBatch = null;
             try {
-                listBatch = vaccineBatchQuery2020(urlBean.getCode(),urlBean.getBatchUrl());
+                listBatch = vaccineBatchQuery2021(urlBean.getCode(),urlBean.getBatchUrl(), urlBean.getBatchDate());
             } catch (IOException e) {
                 result.setData(result.getData()+"url:["+urlBean.getBatchUrl()+"]出错\n"+e.getMessage()+"\n");
             }
@@ -305,7 +305,7 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
      * @return
      * @throws IOException
      */
-    private List<VaccineBatchBean> vaccineBatchQuery2020(Integer batchCode, String batchUrl) throws IOException {
+    public List<VaccineBatchBean> vaccineBatchQuery2020(Integer batchCode, String batchUrl) throws IOException {
         List<VaccineBatchBean> list = new ArrayList<>();
         Document doc = Jsoup.connect(batchUrl).timeout(1000*60*10).maxBodySize(0).get();
         Elements eleTr = doc.getElementsByClass("text");
@@ -336,6 +336,44 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
     }
 
     /**
+     * 处理一个页面的数据并返回 一个LIST2020~
+     * @param batchCode
+     * @param batchUrl
+     * @return
+     * @throws IOException
+     */
+    private List<VaccineBatchBean> vaccineBatchQuery2021(Integer batchCode, String batchUrl,String issueDate) throws IOException {
+        List<VaccineBatchBean> list = new ArrayList<>();
+        Document doc = Jsoup.connect(batchUrl).timeout(1000*60*10).maxBodySize(0).get();
+        Elements eleTr = doc.getElementsByClass("text");
+        eleTr = eleTr.select("tr");
+        for(int i = 1;i<eleTr.size();i++) {
+            Elements ele = eleTr.get(i).select("td");
+            if ("".equals(ele.get(0).text()) || "序号".equals(ele.get(0).text()) || "　".equals(ele.get(0).text()) || "序 号".equals(ele.get(0).text())) {
+                continue;
+            }
+            String pageCode = ele.get(0).text();
+            String batchNo = ele.get(2).text();
+            String expDate = ele.get(3).text();
+//            String issueDate = ele.get(10).text();
+            //检查几个关键字段是否合规
+            if(VerificationUtilities.validateInteger(pageCode) &&
+//                    VerificationUtilities.validateBatchNo(batchNo) &&
+                    VerificationUtilities.validateChineseDate(expDate)) {
+                VaccineBatchBean vbb = new VaccineBatchBean(0, pageCode, ele.get(1).text(),
+                        "", batchNo, "",expDate, ele.get(4).text(),
+                        "", ele.get(5).text(), "", issueDate, ele.get(6).text(),
+                        ele.get(7).text(), batchCode, "", "");
+                list.add(vbb);
+            }else {
+                LOG.warn( String.format("出现不合规数据URL[%s],页面内编号:%s",batchUrl,ele.get(0).text()));
+                return null;
+            }
+        }
+        return list;
+    }
+
+    /**
      * 中文日期转Date
      * @param dateSource 中文日期：
      * @return
@@ -353,4 +391,18 @@ public class VaccineBatchServiceImpl implements VaccineBatchService {
 
     }
 
+    @Override
+    public String importData(int code)  {
+        VaccineUrlBean vaccineUrlBean=  vaccineDao.getVUbyCode(code);
+        try {
+            List<VaccineBatchBean> listV =  vaccineBatchQuery2021(vaccineUrlBean.getCode(),vaccineUrlBean.getBatchUrl(),vaccineUrlBean.getBatchDate());
+            LOG.info(String.format("在URL[%s]抓取到数据[%d]条",vaccineUrlBean.getBatchUrl(),listV.size()));
+            for(VaccineBatchBean batchBean: listV) {
+                vaccineDao.addVaccineBatchData(batchBean);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return vaccineUrlBean.getBatchUrl();
+    }
 }
